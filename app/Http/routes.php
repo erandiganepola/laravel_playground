@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return "Still Building";
 });
+
+Route::get('/admin', function () {
+    return "Still Building";
+});
