@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return "Still Building";
+    return view("welcome");
 });
 
 Route::get('/admin', function () {
