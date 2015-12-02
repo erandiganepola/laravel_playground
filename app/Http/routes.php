@@ -15,6 +15,7 @@ use App\User;
 
 
 Route::get('/', function () {
+    Log::info(Auth::user());
     return Auth::check() ? view('admin') : view('auth.login');
 });
 
@@ -42,6 +43,7 @@ Route::get('register', function () {
     $user = new User;
     $user->username = 'admin';
     $user->password = Hash::make('admin');
+    $user->type='A';
     $user->save();
 
     return $user->password;
