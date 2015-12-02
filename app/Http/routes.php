@@ -11,10 +11,38 @@
 |
 */
 
+use App\User;
+
+
 Route::get('/', function () {
-    return view("welcome");
+    return Auth::check() ? view('admin') : view('auth.login');
 });
 
-Route::get('/admin', function () {
-    return "Still Building";
+
+Route::post('login',['uses'=>'Auth\AuthController@postLogin']);
+Route::get('login',['uses'=>'Auth\AuthController@getLogin']);
+
+Route::get('logout',['as'=>'getLogout','uses'=>'Auth\AuthController@getLogout']);
+
+
+/**
+ * ======================================================
+ * Authentication check before viewing any url
+ * ======================================================
+ */
+Route::group(['middleware' => 'auth'], function () {
+
+});
+
+
+/**
+ * Test function to create a user
+ */
+Route::get('register', function () {
+    $user = new User;
+    $user->username = 'admin';
+    $user->password = Hash::make('admin');
+    $user->save();
+
+    return $user->password;
 });
