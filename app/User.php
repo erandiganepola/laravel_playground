@@ -52,4 +52,12 @@ class User extends Model implements AuthenticatableContract,
      */
     public $incrementing=false;
 
+
+    /**
+     * Whether the model is to be timestamped
+     *
+     * @var bool
+     */
+    public $timestamps=false;
+
 }

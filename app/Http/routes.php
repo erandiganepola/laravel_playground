@@ -15,7 +15,7 @@ use App\User;
 
 
 Route::get('/', function () {
-    Log::info(Auth::user());
+    Log::info("Root directory");
     return Auth::check() ? view('admin') : view('auth.login');
 });
 
@@ -37,14 +37,21 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 /**
+ * ====================================================
  * Test function to create a user
+ * ====================================================
  */
 Route::get('register', function () {
     $user = new User;
-    $user->username = 'admin';
-    $user->password = Hash::make('admin');
+    $user->username = 'sms';
+    $user->password = Hash::make('sms');
     $user->type='A';
     $user->save();
 
     return $user->password;
+});
+
+Route::get('users', function () {
+    $users = User::all();
+    return $users;
 });
