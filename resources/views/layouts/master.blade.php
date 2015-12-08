@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Are You Ready? 2015</title>
+    <title>Symfony Music School</title>
     <link rel="shortcut" href="favicon.ico"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -129,6 +129,36 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Classes</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Students</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Teachers</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Concerts</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Settings</span>
+                    </a>
+                </li>
+
 
             </ul>
         </section>
@@ -142,8 +172,10 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
+
                 @yield('page_header')
                 <small>@yield('sub_header')</small>
+
             </h1>
 
         </section>
@@ -167,7 +199,8 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; <a href="http://areyouready.uom.lk">Are You Ready? 2015</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; <a href="http://areyouready.uom.lk">Are You Ready? 2015</a>.</strong> All rights
+        reserved.
     </footer>
 </div><!-- ./wrapper -->
 
