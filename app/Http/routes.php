@@ -15,7 +15,6 @@ use App\User;
 
 
 Route::get('/', function () {
-    Log::info("Root directory");
     return Auth::check() ? view('admin') : view('auth.login');
 });
 
@@ -32,6 +31,18 @@ Route::get('logout',['as'=>'getLogout','uses'=>'Auth\AuthController@getLogout'])
  * ======================================================
  */
 Route::group(['middleware' => 'auth'], function () {
+
+    /**
+     * Routes related to the students
+     */
+    Route::get('students',['as'=>'students','uses'=>'StudentController@index']);
+    Route::get('addStudent',['as'=>'addStudent','uses'=>'StudentController@create']);
+
+
+    /**
+     * Routes related to classes
+     */
+    Route::get('classes',['as'=>'classes','uses'=>'ClassController@index']);
 
 });
 

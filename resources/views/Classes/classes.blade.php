@@ -2,7 +2,7 @@
 
 
 @section('page_header')
-    Home
+    Classes
 @endsection
 
 
@@ -11,6 +11,7 @@
 @endsection
 
 @section('content')
+
 
 
 

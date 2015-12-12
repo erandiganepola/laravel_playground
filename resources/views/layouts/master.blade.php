@@ -58,13 +58,13 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('dist/img/logo.png')}}" class="user-image" alt="User Image">
+                            <img src="{{asset('dist/img/avatar.png')}}" class="user-image" alt="User Image">
                             <span class="hidden-xs">Admin</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{asset('dist/img/logo.png')}}" class="img-circle" alt="User Image">
+                                <img src="{{asset('dist/img/avatar.png')}}" class="img-circle" alt="User Image">
 
                                 <p>
                                     Admin
@@ -98,7 +98,7 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{asset('dist/img/logo.png')}}" class="img-circle" alt="User Image">
+                    <img src="{{asset('dist/img/avatar.png')}}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p>Admin - SMS</p>
@@ -123,20 +123,20 @@
 
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li>
+                <li @if(url('/')===Request::url()) class="active" @endif>
                     <a href="{{url('/')}}">
                         <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{url('/')}}">
+                <li @if(route('classes')===Request::url()) class="active" @endif>
+                    <a href="{{route('classes')}}">
                         <i class="fa fa-dashboard"></i> <span>Classes</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{url('/')}}">
+                <li @if(route('students')===Request::url()) class="active" @endif>
+                    <a href="{{route('students')}}">
                         <i class="fa fa-dashboard"></i> <span>Students</span>
                     </a>
                 </li>

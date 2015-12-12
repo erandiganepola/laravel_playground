@@ -60,4 +60,9 @@ class User extends Model implements AuthenticatableContract,
      */
     public $timestamps=false;
 
+
+    public function getUsername(){
+        return $this->username;
+    }
+
 }
