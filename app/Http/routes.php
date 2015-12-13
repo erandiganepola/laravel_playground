@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
      */
     Route::get('students',['as'=>'students','uses'=>'StudentController@index']);
     Route::get('addStudent',['as'=>'addStudent','uses'=>'StudentController@create']);
+    Route::post('addStudent',['as'=>'addStudent','uses'=>'StudentController@store']);
 
 
     /**

@@ -137,7 +137,7 @@
 
                 <li @if(route('students')===Request::url()) class="active" @endif>
                     <a href="{{route('students')}}">
-                        <i class="fa fa-dashboard"></i> <span>Students</span>
+                        <i class="fa fa-users"></i> <span>Students</span>
                     </a>
                 </li>
 

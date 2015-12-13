@@ -18,7 +18,7 @@
         </div><!-- /.box-header -->
 
         <!-- form start -->
-        <form class="form-horizontal">
+        <form class="form-horizontal" action="{{route('addStudent')}}" method="post">
 
             {{csrf_field()}}
 
@@ -84,8 +84,8 @@
                         <label for="phone" class="col-sm-2 control-label">Phone {{$i}}</label>
 
                         <div class="col-sm-4">
-                            <input type="tel" class="form-control" id="phone{{$i}}" placeholder="Date of Birth"
-                                   name="phone{{$i}}">
+                            <input type="tel" class="form-control" id="phone[]" placeholder="Phone"
+                                   name="phone[]">
                         </div>
                     </div>
                     <div class="clearfix"></div>
