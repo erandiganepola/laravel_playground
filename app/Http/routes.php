@@ -39,6 +39,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('addStudent',['as'=>'addStudent','uses'=>'StudentController@create']);
     Route::post('addStudent',['as'=>'addStudent','uses'=>'StudentController@store']);
 
+    /**
+     * Routes related to testing purposes
+     */
+    Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
 
     /**
      * Routes related to classes
