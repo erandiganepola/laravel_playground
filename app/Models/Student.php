@@ -14,7 +14,7 @@ class Student extends BaseModel
     private $name;
     private $gender;
 
-    public static function GetStudentFromID($studentId)
+    public static function fromID($studentId)
     {
         $pdo = DB::connection()->getPdo();
         $statement= $pdo->prepare("SELECT * FROM student WHERE ID = :studentID;");
@@ -32,7 +32,7 @@ class Student extends BaseModel
 
     }
 
-    public static function InsertStudent($student)
+    public static function insertStudent($student)
     {
         $pdo = DB::connection()->getPdo();
         $statement= $pdo->prepare("INSERT INTO student (name,date_of_birth,address,email,gender) VALUES (:name,:date_of_birth, :address, :email, :gender);");
