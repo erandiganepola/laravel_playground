@@ -39,6 +39,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('addStudent',['as'=>'addStudent','uses'=>'StudentController@create']);
     Route::post('addStudent',['as'=>'addStudent','uses'=>'StudentController@store']);
 
+    /**
+     * Routes related to parents
+     */
+    Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@search']);
+
 
     /**
      * Routes related to classes

@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Log;
 
-class StudentController extends Controller
+class ParentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('Students.students');
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('Students.addStudent');
+        //
     }
 
     /**
@@ -38,8 +38,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->all());
-        return "Got it";
+        //
     }
 
     /**
@@ -85,5 +84,13 @@ class StudentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+
+
+    public function search($nic){
+        Log::info($nic);
+        return 0;
     }
 }

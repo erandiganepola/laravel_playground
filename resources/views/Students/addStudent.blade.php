@@ -33,19 +33,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="name" class="col-sm-2 control-label">Gender</label>
+                    <label for="genderMale" class="col-sm-2 control-label">Gender</label>
 
                     <div class="col-sm-10">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="genderMale" value="" checked="checked">
+                                <input type="radio" name="gender" id="genderMale" value="M" checked="checked">
                                 Male
                             </label>
                         </div>
 
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="genderFemale" value="">
+                                <input type="radio" name="gender" id="genderFemale" value="F">
                                 Female
                             </label>
                         </div>
@@ -91,6 +91,86 @@
                     <div class="clearfix"></div>
                 @endfor
 
+
+                {{--
+                ========================================================
+                Enter the parent's details. First, search for the parent.
+                ========================================================
+                --}}
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Parent's Details</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        {{--Search for the student's parent if exists, else, give the option to enter the student's details--}}
+                        <div class="form-group">
+                            <label for="parentSearchNic" class="col-sm-2 control-label">Parent's NIC</label>
+
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="parentSearchNic"
+                                       placeholder="Parent's NIC (xxxxxxxxxV)"
+                                       required pattern="{10}" oninput="searchParent()">
+
+                                <div class="container-fluid collapse" id="parentSearchNicLabel">
+                                    <label class="label label-danger">
+                                        Please enter a valid NIC
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {{--Enter parent's details--}}
+
+                        <div id="parentDetails" class="collapse">
+                            <div class="form-group">
+                                <label for="parentName" class="col-sm-2 control-label">Parent's Name</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="parentName"
+                                           placeholder="Parent's Name" name="parentName">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="parentGenderMale" class="col-sm-2 control-label">Gender</label>
+
+                                <div class="col-sm-10">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="parentGender" id="parentGenderMale" value="M"
+                                                   checked="checked">
+                                            Male
+                                        </label>
+                                    </div>
+
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="parentgender" value="F">
+                                            Female
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            @for($i=1;$i<3;$i++)
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Phone {{$i}}</label>
+
+                                    <div class="col-sm-4">
+                                        <input type="tel" class="form-control" placeholder="Phone"
+                                               name="parentPhone[]">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            @endfor
+                        </div>
+                    </div>
+                </div>
+
             </div><!-- /.box-body -->
             <div class="box-footer">
                 <button type="submit" class="btn btn-default">Cancel</button>
@@ -100,4 +180,38 @@
     </div>
 
 
+    <script>
+
+        /**
+         * Send an ajax request and check if the parent exists in the database
+         */
+        function searchParent() {
+            $('#parentDetails').collapse('hide');
+            $('#parentName').prop('required', false);
+            $('#parentPhone').children().eq(0).prop('required', false);
+
+            var nic = $('#parentSearchNic').val();
+
+            if (nic.length < 10) {
+                $('#parentSearchNicLabel').collapse('show');
+                return;
+            }
+            else {
+                $('#parentSearchNicLabel').collapse('hide');
+            }
+
+            //send the ajax
+            $.ajax({
+                url: '{{url('getParent')}}/' + nic,
+                data: {
+                    _token: '{{csrf_token()}}'
+                },
+                type: 'post',
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+    </script>
 @endsection
