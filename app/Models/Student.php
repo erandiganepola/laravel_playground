@@ -1,7 +1,10 @@
 <?php namespace App\Models;
 
-//Model for Student
+/**
+ * Model for students
+ */
 
+use App\Models\StudentParentPair\StudentParentPair;
 use InvalidArgumentException;
 use DB;
 use Exception;
@@ -46,6 +49,29 @@ class Student extends BaseModel
 
 
     /**
+     * Get the parents of a given student
+     *
+     * @return array
+     */
+    public function getParents()
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("SELECT * FROM student_parent JOIN parent ON (parent.nic = student_parent.parent_nic) WHERE student_parent.student_ID = :studentID;");
+        $statement->execute(array("studentID" => $this->getID()));
+
+        $outputs = array();
+        while ($row = $statement->fetch()) {
+            $parent = new Guardian();
+            $parent->loadFromData($row);
+            $pair = new StudentParentPair($this, $parent, $row["is_guardian"]);
+            array_push($outputs, $pair);
+        }
+
+        return $outputs;
+    }
+
+
+    /**
      * Insert an student to the database.
      *
      * @param $student
@@ -69,6 +95,73 @@ class Student extends BaseModel
     {
 
     }
+
+
+
+    /**
+     * Adds a parent to the student
+     *
+     * @param $parent
+     * @throws Exception
+     */
+    public function addParent($parent)
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("INSERT INTO student_parent (student_ID, parent_NIC,is_guardian) VALUES (:studentID,:parentNIC, FALSE);");
+        $result = $statement->execute(array("studentID" => $this->getID(), "parentNIC" => $parent->getNIC()));
+        if (!$result)
+            throw new Exception("Unable to Add Parent");
+
+    }
+
+
+    /**
+     * Removes a parent from a given student
+     *
+     * @param $parent
+     * @throws Exception
+     */
+    public function removeParent($parent)
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("REMOVE FROM student_parent WHERE student_ID = :studentID AND parent_nic = :parentNIC AND is_guardian = FALSE);");
+        $result = $statement->execute(array("studentID" => $this->getID(), "parentNIC" => $parent->getNIC()));
+        if (!$result)
+            throw new Exception("Unable to Remove Parent");
+    }
+
+
+    /**
+     * Set the guardian of a student
+     *
+     * @param $guardian
+     * @throws Exception
+     */
+    public function setGuardian($guardian)
+    {
+        $this->clearGuardians();
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("INSERT INTO student_parent (student_ID, parent_NIC,is_guardian) VALUES (:studentID,:parentNIC, TRUE);");
+        $result = $statement->execute(array("studentID" => $this->getID(), "parentNIC" => $guardian->getNIC()));
+        if (!$result)
+            throw new Exception("Unable to Set Guardian");
+    }
+
+
+    /**
+     * Clears the guardians of a student
+     *
+     * @throws Exception
+     */
+    public function clearGuardians()
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("DELETE FROM student_parent WHERE student_ID = :studentID;");
+        $result = $statement->execute(array("studentID" => $this->getID()));
+        if (!$result)
+            throw new Exception("Unable to Clear Guardians");
+    }
+
 
     /**
      * Load the student object with data fetched from the database
@@ -110,15 +203,15 @@ class Student extends BaseModel
      */
     public static function getStudents()
     {
-        $pdo=DB::connection()->getPdo();
-        $statement=$pdo->prepare("SELECT * FROM student");
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("SELECT * FROM student");
         $statement->execute();
 
-        $results=$statement->fetchAll();
+        $results = $statement->fetchAll();
 
-        $students=array();
-        foreach($results as $result){
-            $students[]=self::fromID($result["ID"]);
+        $students = array();
+        foreach ($results as $result) {
+            $students[] = self::fromID($result["ID"]);
         }
         return $students;
     }
