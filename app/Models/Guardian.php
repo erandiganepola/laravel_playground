@@ -22,7 +22,7 @@ class Guardian extends BaseModel
         $result = $statement->fetch();
 
         $guardian = new Guardian();
-        $guardian>loadFromData($result);
+        $guardian->loadFromData($result);
         return $guardian;
 
     }
@@ -42,12 +42,32 @@ class Guardian extends BaseModel
     }
 
 
+
+    public function getChildren()
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement= $pdo->prepare("SELECT * FROM student_parent JOIN student ON (student.ID = student_parent.student_ID) WHERE student_parent.parent_nic = :nic;");
+        $statement->execute(array("nic" => $this->getNIC()));
+
+        $outputs = array();
+        while($row = $statement->fetch())
+        {
+            $student = new Student();
+            $student->loadFromData($row);
+            $pair = new StudentParentPair($student,this,$row["is_guardian"]);
+            array_push($outputs,$pair);
+        }
+
+        return $outputs;
+
+    }
+
     public function __construct()
     {
 
     }
 
-    protected function loadFromData($data)
+    public function loadFromData($data)
     {
         $this->nic = $data["nic"];
         $this->name=$data["name"];

@@ -2,3 +2,7 @@ Triggers
 
 Admission Number Generation
 Siblings Generation
+When adding a parent to a student, check whether duplicate mothers or fathers are made.
+When adding a guardian to a student, check whether a parent is already added. if so, a guardian cannot be added.
+No parent may added twice to same student
+Check NIC numbers validity trigger

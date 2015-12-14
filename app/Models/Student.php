@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 //Model for Student
 
+use App\Models\StudentParentPair\StudentParentPair;
 use InvalidArgumentException;
 use DB;
 use Exception;
@@ -32,6 +33,25 @@ class Student extends BaseModel
 
     }
 
+    public function getParents()
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement= $pdo->prepare("SELECT * FROM student_parent JOIN parent ON (parent.nic = student_parent.parent_nic) WHERE student_parent.student_ID = :studentID;");
+        $statement->execute(array("studentID" => $this->getID()));
+
+        $outputs = array();
+        while($row = $statement->fetch())
+        {
+            $parent = new Guardian();
+            $parent->loadFromData($row);
+            $pair = new StudentParentPair($this,$parent,$row["is_guardian"]);
+            array_push($outputs,$pair);
+        }
+
+        return $outputs;
+
+    }
+
     public static function insertStudent($student)
     {
         $pdo = DB::connection()->getPdo();
@@ -50,7 +70,45 @@ class Student extends BaseModel
 
     }
 
-    protected function loadFromData($data)
+    public function addParent($parent)
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement= $pdo->prepare("INSERT INTO student_parent (student_ID, parent_NIC,is_guardian) VALUES (:studentID,:parentNIC, FALSE);");
+        $result = $statement->execute(array( "studentID" => $this->getID(), "parentNIC" => $parent->getNIC()));
+        if(!$result)
+            throw new Exception("Unable to Add Parent");
+
+    }
+
+    public function removeParent($parent)
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement= $pdo->prepare("REMOVE FROM student_parent WHERE student_ID = :studentID AND parent_nic = :parentNIC AND is_guardian = FALSE);");
+        $result = $statement->execute(array( "studentID" => $this->getID(), "parentNIC" => $parent->getNIC()));
+        if(!$result)
+            throw new Exception("Unable to Remove Parent");
+    }
+
+    public function setGuardian($guardian)
+    {
+        $this->clearGuardians();
+        $pdo = DB::connection()->getPdo();
+        $statement= $pdo->prepare("INSERT INTO student_parent (student_ID, parent_NIC,is_guardian) VALUES (:studentID,:parentNIC, TRUE);");
+        $result = $statement->execute(array( "studentID" => $this->getID(), "parentNIC" => $guardian->getNIC()));
+        if(!$result)
+            throw new Exception("Unable to Set Guardian");
+    }
+
+    public function clearGuardians()
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement= $pdo->prepare("DELETE FROM student_parent WHERE student_ID = :studentID;");
+        $result = $statement->execute(array( "studentID" => $this->getID()));
+        if(!$result)
+            throw new Exception("Unable to Clear Guardians");
+    }
+
+    public function loadFromData($data)
     {
         $this->id = $data["ID"];
         $this->date_of_birth = $data["date_of_birth"];

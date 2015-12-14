@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guardian;
+use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Http\Request;
+
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -20,9 +23,11 @@ class TestController extends Controller
      */
     public function show()
     {
-        $student = Student::GetStudentFromID("1");
+        $student = Student::FromID("1");
         echo $student->getName();
-        Student::InsertStudent($student);
+        $parent = Guardian::fromNIC("931931931V");
+
+        $student->setGuardian($parent);
 
     }
 
