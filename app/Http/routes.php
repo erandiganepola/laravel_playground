@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
      * Routes related to testing purposes
      */
     Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
-    
+
 
     /**
      * Routes related to classes

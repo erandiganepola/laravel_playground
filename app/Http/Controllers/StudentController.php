@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,7 +18,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('Students.students');
+        $students=Student::getStudents();
+        return view('Students.students',['students'=>$students]);
     }
 
     /**
