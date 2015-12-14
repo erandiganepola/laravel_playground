@@ -45,6 +45,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@search']);
 
 
+
+    /**
+     * Routes related to testing purposes
+     */
+    Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
+    
+
     /**
      * Routes related to classes
      */
