@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Are You Ready? 2015</title>
+    <title>Symfony Music School</title>
     <link rel="shortcut" href="favicon.ico"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -58,13 +58,13 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('dist/img/logo.png')}}" class="user-image" alt="User Image">
+                            <img src="{{asset('dist/img/avatar.png')}}" class="user-image" alt="User Image">
                             <span class="hidden-xs">Admin</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{asset('dist/img/logo.png')}}" class="img-circle" alt="User Image">
+                                <img src="{{asset('dist/img/avatar.png')}}" class="img-circle" alt="User Image">
 
                                 <p>
                                     Admin
@@ -98,7 +98,7 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{asset('dist/img/logo.png')}}" class="img-circle" alt="User Image">
+                    <img src="{{asset('dist/img/avatar.png')}}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p>Admin - SMS</p>
@@ -123,9 +123,39 @@
 
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li>
+                <li @if(url('/')===Request::url()) class="active" @endif>
                     <a href="{{url('/')}}">
                         <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li @if(route('classes')===Request::url()) class="active" @endif>
+                    <a href="{{route('classes')}}">
+                        <i class="fa fa-dashboard"></i> <span>Classes</span>
+                    </a>
+                </li>
+
+                <li @if(route('students')===Request::url()) class="active" @endif>
+                    <a href="{{route('students')}}">
+                        <i class="fa fa-users"></i> <span>Students</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Teachers</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Concerts</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{url('/')}}">
+                        <i class="fa fa-dashboard"></i> <span>Settings</span>
                     </a>
                 </li>
 
@@ -142,8 +172,10 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
+
                 @yield('page_header')
                 <small>@yield('sub_header')</small>
+
             </h1>
 
         </section>
@@ -167,7 +199,8 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; <a href="http://areyouready.uom.lk">Are You Ready? 2015</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; <a href="#">Eduze</a>.</strong> All rights
+        reserved.
     </footer>
 </div><!-- ./wrapper -->
 
