@@ -173,7 +173,7 @@ class Teacher extends BaseModel
     
     public function getPhone()
     {
-        return this->phones;
+        return $this->phones;
     }
 
     public function getDOB()

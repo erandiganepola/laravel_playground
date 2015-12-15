@@ -45,10 +45,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@hasParent']);
 
     /**
-     * Routes related to parents
+     * Routes related to teachers
      */
-   Route::get('teachers',['as'=>'teachers','uses'=>'StudentController@index']);
-   // Route::get('addTeacher',['as'=>'addTeacher','uses'=>'StudentController@create']);
+    Route::get('teachers',['as'=>'teachers','uses'=>'TeacherController@index']);
+    Route::get('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@create']);
+    Route::post('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@store']);
+
+
 
     /**
      * Routes related to testing purposes

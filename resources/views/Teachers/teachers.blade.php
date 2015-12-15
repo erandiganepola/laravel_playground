@@ -27,26 +27,26 @@
                 }
             </style>
 
-            <table class="table table-condensed table-hover table-hover" id="studentTable">
+            <table class="table table-condensed table-hover table-hover" id="teacherTable">
                 <thead>
                 <tr>
-                    <th>Reg No</th>
+                    <th>Teacher ID</th>
                     <th>Name</th>
                     <th>Contact No</th>
                     <th>Gender</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($students as $student)
+                @foreach($teachers as $teacher)
                     <tr>
-                        <td>{{$student->getID()}}</td>
-                        <td>{{$student->getName()}}</td>
+                        <td>{{$teacher->getID()}}</td>
+                        <td>{{$teacher->getName()}}</td>
                         <td>
-                            @foreach($student->getPhones() as $phone)
+                            @foreach($teacher->getPhones() as $phone)
                                 {{$phone}},
                             @endforeach
                         </td>
-                        <td>{{$student->getGender()}}</td>
+                        <td>{{$teacher->getGender()}}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -57,7 +57,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#studentTable').DataTable();
+            $('#teacherTable').DataTable();
         });
     </script>
 
