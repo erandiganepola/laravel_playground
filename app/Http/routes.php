@@ -100,6 +100,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
+
+
+
+
+
+
 /**
  * ====================================================
  * Test function to create a user
