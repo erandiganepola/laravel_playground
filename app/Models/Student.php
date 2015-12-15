@@ -72,9 +72,10 @@ class Student extends BaseModel
 
 
     /**
-     * Insert an student to the database.
+     * Insert an student to the Database
      *
      * @param $student
+     * @return Student
      * @throws Exception
      * @throws \App\Models\Exception
      */
@@ -84,18 +85,36 @@ class Student extends BaseModel
         $statement = $pdo->prepare("INSERT INTO student (name,date_of_birth,address,email,gender) VALUES (:name,:date_of_birth, :address, :email, :gender);");
 
 
-        $result = $statement->execute(array("name" => $student->getName(), "date_of_birth" => $student->getDOB(), "address" => $student->getAddress(), "email" => $student->getEmail(), "gender" => Person::genderToString($student->getGender())));
+        $result = $statement->execute(array("name" => $student->getName(),
+            "date_of_birth" => $student->getDOB(), "address" => $student->getAddress(),
+            "email" => $student->getEmail(), "gender" => Person::genderToString($student->getGender())));
+
         if (!$result)
             throw new Exception("Unable to insert student");
 
+        //last inserted ID
+        $fetchIdStatement=$pdo->prepare("SELECT ID FROM student ORDER BY ID DESC LIMIT 1");
+        $fetchIdStatement->execute();
+        $result=$fetchIdStatement->fetch();
+        Log::info($fetchIdStatement->fetch());
 
+        //add telephone numbers to the student
+        $addPhonesStatement = $pdo->prepare("INSERT INTO student_telephone (ID,telephone_number) VALUES (:id,:phone)");
+        foreach ($student->getPhones() as $phone) {
+            $success=$addPhonesStatement->execute(array('id' => $result['ID'], 'phone' => $phone));
+
+            if(!$success)
+                throw new Exception("Unable to add Phone Number");
+        }
+
+        //finally return the student object
+        return self::fromID($result['ID']);
     }
 
     public function __construct()
     {
 
     }
-
 
 
     /**
@@ -216,6 +235,7 @@ class Student extends BaseModel
         return $students;
     }
 
+
     public function getID()
     {
         return $this->id;
@@ -282,7 +302,6 @@ class Student extends BaseModel
     }
 
 
-
     /**
      * Get the student as an PHP array.
      * To be used in the JSON form.
@@ -291,13 +310,13 @@ class Student extends BaseModel
      */
     public function toArray()
     {
-        $student=array();
-        $student['id']=$this->id;
-        $student['date_of_birth']=$this->date_of_birth;
-        $student['address']=$this->address;
-        $student['name']=$this->name;
-        $student['gender']=$this->gender;
-        $student['phones']=$this->phones;
+        $student = array();
+        $student['id'] = $this->id;
+        $student['date_of_birth'] = $this->date_of_birth;
+        $student['address'] = $this->address;
+        $student['name'] = $this->name;
+        $student['gender'] = $this->gender;
+        $student['phones'] = $this->phones;
 
         return $student;
     }

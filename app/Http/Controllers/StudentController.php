@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guardian;
+use App\Models\Person;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Log;
+use Exception;
+use DB;
 
 class StudentController extends Controller
 {
@@ -18,8 +23,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students=Student::getStudents();
-        return view('Students.students',['students'=>$students]);
+        $students = Student::getStudents();
+        return view('Students.students', ['students' => $students]);
     }
 
     /**
@@ -35,19 +40,103 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         Log::info($request->all());
-        return "Got it";
+
+        $validator = Validator::make($request->all(), array(
+            'name' => 'required',
+            'gender' => 'required|in:F,M',
+            'email' => 'required|email',
+            'address' => 'required',
+            'birthday' => 'required|date',
+            'phone' => 'required|array',
+            'parentSearchNic' => 'required',
+            'parentGender' => 'in:F,M',
+            'parentPhone' => 'array'
+        ));
+
+        if ($validator->fails()) {
+            return back()->with('errors', $validator->errors()->all())->withInput();
+        }
+
+        $parent = Guardian::find($request->parentSearchNic);
+        $parentAvailable = true;
+        if ($parent == null) {
+            // if the parent is already stored
+            $parentAvailable = false;
+
+            /**
+             * Add a parent id not exists.
+             */
+            $parentValidator = Validator::make($request->all(), array(
+                'parentSearchNic' => 'required|unique:parent,nic',
+                'parentGender' => 'required|in:F,M',
+                'parentPhone' => 'required|array',
+                'parentPhone' => 'required',
+                'parentName' => 'required'
+            ));
+
+            if ($parentValidator->fails()) {
+                return back()->with('errors', $validator->errors()->all())->withInput();
+            }
+
+            $parent = new Guardian();
+            $parent->setName($request->parentName);
+            $parent->setNIC($request->parentSearchNic);
+            $parent->setGender(Person::parseGender($request->parentGender));
+            $parent->setPhones($request->parentPhone);
+        }
+
+        //add the student
+        $student = new Student();
+        $student->setName($request->name);
+        $student->setAddress($request->address);
+        $student->setGender($request->gender);
+        $student->setDOB($request->birthday);
+        $student->setEmail($request->email);
+        $student->setPhones($request->phone);
+
+
+        DB::beginTransaction();
+        try {
+            $student=Student::insertStudent($student);
+            Log::info("Student Added");
+
+            //add parent if not available
+            if (!$parentAvailable)
+                Guardian::insertParent($parent);
+
+            Log::info("Student Added");
+
+            //add parent to the student
+            if(isset($request->isGuardian)){
+                $student->setGuardian($parent);
+            }
+            else{
+                $student->addParent($parent);
+            }
+            Log::info("Parent Set complete");
+
+        } catch (Exception $e) {
+            DB::rollback();
+            Log::error($e->getMessage());
+            return back()->with('errors',array("Something went wrong!"))->withInput();
+        }
+        DB::commit();
+
+
+        return back()->with('success', $request->name . " added successfully!");
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -58,7 +147,7 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -69,8 +158,8 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -81,7 +170,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

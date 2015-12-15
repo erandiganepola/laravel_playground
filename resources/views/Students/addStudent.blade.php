@@ -12,6 +12,31 @@
 
 @section('content')
 
+    {{--Error--}}
+    @if(Session::has('errors'))
+
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> Oops!</h4>
+            <ul>
+                @foreach(Session::get('errors') as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+
+    @endif
+
+    {{--Success Message--}}
+    @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-check"></i> Successful!</h4>
+            {{Session::get('success')}}
+        </div>
+    @endif
+
+    {{-- Panel showing form --}}
     <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">Student Details</h3>
@@ -28,7 +53,8 @@
                     <label for="name" class="col-sm-2 control-label">Name</label>
 
                     <div class="col-sm-10">
-                        <input type="text" required class="form-control" id="name" placeholder="Name" name="name">
+                        <input type="text" required class="form-control" id="name" placeholder="Name" name="name"
+                               value="{{old('name')}}">
                     </div>
                 </div>
 
@@ -38,14 +64,16 @@
                     <div class="col-sm-10">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="genderMale" value="M" checked="checked">
+                                <input type="radio" name="gender" id="genderMale" value="M"
+                                       @if(old('gender')==="M") checked @endif>
                                 Male
                             </label>
                         </div>
 
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="genderFemale" value="F">
+                                <input type="radio" name="gender" id="genderFemale" value="F"
+                                       @if(old('gender')==="F") checked @endif>
                                 Female
                             </label>
                         </div>
@@ -58,7 +86,8 @@
                     <label for="email" class="col-sm-2 control-label">Email</label>
 
                     <div class="col-sm-6">
-                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" required
+                               value="{{old('email')}}">
                     </div>
                 </div>
 
@@ -67,7 +96,7 @@
 
                     <div class="col-sm-10">
                         <input type="text" required class="form-control" id="address" placeholder="Address"
-                               name="address">
+                               name="address" value="{{old('address')}}">
                     </div>
                 </div>
 
@@ -77,7 +106,7 @@
 
                     <div class="col-sm-4">
                         <input type="date" class="form-control" id="birthday" placeholder="Date of Birth" required
-                               name="birthday">
+                               name="birthday" value="{{old('birthday')}}">
                     </div>
                 </div>
 
@@ -87,7 +116,7 @@
 
                         <div class="col-sm-4">
                             <input type="tel" class="form-control" id="phone[]" placeholder="Phone"
-                                   name="phone[]">
+                                   name="phone[]" value="{{old('phone')[$i-1]}}">
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -112,8 +141,9 @@
 
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" id="parentSearchNic"
-                                       placeholder="Parent's NIC (xxxxxxxxxV)" name="parenSearchNic"
-                                       required pattern="{10}" oninput="searchParent()">
+                                       placeholder="Parent's NIC (xxxxxxxxxV)" name="parentSearchNic"
+                                       required pattern="{10}" oninput="searchParent()"
+                                       value="{{old('parentSearchNic')}}">
 
                                 <div class="container-fluid collapse" id="parentSearchNicLabel">
                                     <label class="label label-danger">
@@ -123,16 +153,30 @@
                             </div>
                         </div>
 
+                        {{--Check if the parent is guardian--}}
+                        <div class="form-group">
+                            <label for="isGuardian" class="col-sm-2 control-label">Is Guardian?</label>
+
+                            <div class="col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="isGuardian" id="isGuardian"
+                                               @if(old('isGuardian') != null) checked @endif>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
 
                         {{--Enter parent's details--}}
 
-                        <div id="parentDetails" class="collapse">
+                        <div id="parentDetails" @if(!Session::has('errors')) class="collapse" @endif>
                             <div class="form-group">
                                 <label for="parentName" class="col-sm-2 control-label">Parent's Name</label>
 
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="parentName"
-                                           placeholder="Parent's Name" name="parentName">
+                                           placeholder="Parent's Name" name="parentName" value="{{old('parentName')}}">
                                 </div>
                             </div>
 
@@ -143,14 +187,15 @@
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="parentGender" id="parentGenderMale" value="M"
-                                                   checked="checked">
+                                                   checked="checked" @if(old('parentGender')==="M") checked @endif>
                                             Male
                                         </label>
                                     </div>
 
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="parentGender" value="F">
+                                            <input type="radio" name="parentGender" value="F"
+                                                   @if(old('parentGender')==="F") checked @endif>
                                             Female
                                         </label>
                                     </div>
@@ -158,13 +203,14 @@
                                 </div>
                             </div>
 
+
                             @for($i=1;$i<3;$i++)
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Phone {{$i}}</label>
 
                                     <div class="col-sm-4">
                                         <input type="tel" class="form-control" placeholder="Phone"
-                                               name="parentPhone[]">
+                                               name="parentPhone[]" value="{{old('parentPhone')[$i-1]}}">
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -194,7 +240,7 @@
 
             var nic = $('#parentSearchNic').val();
 
-            if (nic.length < 10) {
+            if (nic.length != 10) {
                 $('#parentSearchNicLabel').collapse('show');
                 return;
             }

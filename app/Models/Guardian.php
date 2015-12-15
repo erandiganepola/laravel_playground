@@ -59,11 +59,21 @@ class Guardian extends BaseModel
         $pdo = DB::connection()->getPdo();
         $statement= $pdo->prepare("INSERT INTO parent (name,nic,gender) VALUES (:name,:nic, :gender);");
 
+        $result = $statement->execute(array( "name" => $parent->getName(), "nic" => $parent->getNIC(),
+            "gender" => Person::genderToString($parent->getGender())));
 
-        $result = $statement->execute(array( "name" => $parent->getName(), "nic" => $parent->getNIC(),"gender" => Person::genderToString($parent->getGender())));
         if(!$result)
             throw new Exception("Unable to insert parent");
 
+
+        //add telephone numbers to the student
+        $addPhonesStatement = $pdo->prepare("INSERT INTO parent_telephone (nic,telephone_number) VALUES (:nic,:phone))");
+        foreach ($parent->getPhones() as $phone) {
+            $success=$addPhonesStatement->execute(array('nic' => $parent->getNIC(), 'phone' => $phone));
+
+            if(!$success)
+                throw new Exception("Unable to add Phone Number");
+        }
 
     }
 
@@ -107,6 +117,7 @@ class Guardian extends BaseModel
     private $name;
     private $gender;
     private $nic;
+    private $phones;
 
     public function getName()
     {
@@ -133,6 +144,17 @@ class Guardian extends BaseModel
     {
         $this->nic = $value;
     }
+
+    public  function getPhones()
+    {
+        return $this->phones;
+    }
+
+    public function setPhones($phones)
+    {
+        $this->phones = $phones;
+    }
+
 
 
     /**
