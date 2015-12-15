@@ -158,6 +158,22 @@ class Teacher extends BaseModel
         return $instruments;
     }
     
+      /**
+     * Add an instruments to a teacher
+     
+     * @return none
+     */
+    public function addInstrument($instrument_name)
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("INSERT INTO teacher_instrument (teacher_id,instrument_name) VALUES (:teacher_id,:instrument_name);");
+        $result_insert_teacher_instrument = $statement->execute(array("teacher_id" => $this->getId(), "instrument_name" =>$instrument_name ));
+        if (!$result_insert_teacher_instrument)
+            throw new Exception("Unable to insert to teacher_instrument");
+        
+    }
+    
+    
     
      /**
      * getters and setters
