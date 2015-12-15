@@ -153,6 +153,14 @@
                             </div>
                         </div>
 
+
+                        <div class="form-group" id="parentFoundAlert" hidden style="color: green;font-size: 16px">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <strong>Parent's details found!</strong>
+                            </div>
+                        </div>
+
+
                         {{--Check if the parent is guardian--}}
                         <div class="form-group">
                             <label for="isGuardian" class="col-sm-2 control-label">Is Guardian?</label>
@@ -217,6 +225,10 @@
                             @endfor
                         </div>
                     </div>
+
+                    <div class="overlay">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
                 </div>
 
             </div><!-- /.box-body -->
@@ -230,10 +242,21 @@
 
     <script>
 
+
+        /*
+         * Hide the overlay at the begining
+         */
+        $(document).ready(function () {
+            $('.overlay').hide();
+            $('#parentFoundAlert').hide();
+        });
+
+
         /**
          * Send an ajax request and check if the parent exists in the database
          */
         function searchParent() {
+            $('#parentFoundAlert').hide();
             $('#parentDetails').collapse('hide');
             $('#parentName').prop('required', false);
             $('#parentPhone').children().eq(0).prop('required', false);
@@ -248,6 +271,8 @@
                 $('#parentSearchNicLabel').collapse('hide');
             }
 
+            $('.overlay').show();
+
             //send the ajax
             $.ajax({
                 url: '{{url('getParent')}}/' + nic,
@@ -258,13 +283,15 @@
                 success: function (data) {
                     console.log(data);
                     if (data == 1) {
-
+                        $('#parentFoundAlert').show();
                     }
                     else {
                         $('#parentDetails').collapse('show');
                         $('#parentName').prop('required', true);
                         $('#parentPhone').children().eq(0).prop('required', true);
                     }
+
+                    $('.overlay').hide();
                 }
             });
         }

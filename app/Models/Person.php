@@ -10,7 +10,7 @@ abstract class Person
         {
             return Person::GENDER_MALE;
         }
-        else if(strcmp("F",$gender))
+        else if(strcmp("F",$gender)==0)
         {
             return Person::GENDER_FEMALE;
         }
@@ -19,11 +19,11 @@ abstract class Person
 
     public static function genderToString($gender)
     {
-        if($gender == Person::GENDER_MALE)
+        if($gender === Person::GENDER_MALE)
         {
             return "M";
         }
-        else if($gender == Person::GENDER_FEMALE)
+        else if($gender === Person::GENDER_FEMALE)
         {
             return "F";
         }

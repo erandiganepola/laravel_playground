@@ -88,7 +88,7 @@ class StudentController extends Controller
             $parent->setName($request->parentName);
             $parent->setNIC($request->parentSearchNic);
             $parent->setGender(Person::parseGender($request->parentGender));
-            $parent->setPhones($request->parentPhone);
+            $parent->setPhones(array_filter($request->parentPhone));
         }
 
         //add the student
@@ -98,19 +98,17 @@ class StudentController extends Controller
         $student->setGender($request->gender);
         $student->setDOB($request->birthday);
         $student->setEmail($request->email);
-        $student->setPhones($request->phone);
+        $student->setPhones(array_filter($request->phone));
 
 
         DB::beginTransaction();
         try {
             $student=Student::insertStudent($student);
-            Log::info("Student Added");
 
             //add parent if not available
             if (!$parentAvailable)
                 Guardian::insertParent($parent);
 
-            Log::info("Student Added");
 
             //add parent to the student
             if(isset($request->isGuardian)){
@@ -119,7 +117,6 @@ class StudentController extends Controller
             else{
                 $student->addParent($parent);
             }
-            Log::info("Parent Set complete");
 
         } catch (Exception $e) {
             DB::rollback();

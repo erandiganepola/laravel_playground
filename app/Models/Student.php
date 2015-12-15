@@ -44,6 +44,7 @@ class Student extends BaseModel
 
         $student = new Student();
         $student->loadFromData($result);
+
         return $student;
     }
 
@@ -93,18 +94,19 @@ class Student extends BaseModel
             throw new Exception("Unable to insert student");
 
         //last inserted ID
-        $fetchIdStatement=$pdo->prepare("SELECT ID FROM student ORDER BY ID DESC LIMIT 1");
+        $fetchIdStatement = $pdo->prepare("SELECT ID FROM student ORDER BY ID DESC LIMIT 1");
         $fetchIdStatement->execute();
-        $result=$fetchIdStatement->fetch();
-        Log::info($fetchIdStatement->fetch());
+        $result = $fetchIdStatement->fetch();
 
         //add telephone numbers to the student
         $addPhonesStatement = $pdo->prepare("INSERT INTO student_telephone (ID,telephone_number) VALUES (:id,:phone)");
         foreach ($student->getPhones() as $phone) {
-            $success=$addPhonesStatement->execute(array('id' => $result['ID'], 'phone' => $phone));
+            if (!empty($phone)) {
+                $success = $addPhonesStatement->execute(array('id' => $result['ID'], 'phone' => $phone));
 
-            if(!$success)
-                throw new Exception("Unable to add Phone Number");
+                if (!$success)
+                    throw new Exception("Unable to add Phone Number");
+            }
         }
 
         //finally return the student object
@@ -207,8 +209,12 @@ class Student extends BaseModel
 
         $this->phones = array();
 
+        Log::info($phoneResults);
         foreach ($phoneResults as $phoneResult) {
-            $this->phones[] = $phoneResult;
+            if(!in_array($phoneResult,$this->phones)){
+                $this->phones[] = $phoneResult;
+            }
+
         }
 
     }
