@@ -44,6 +44,13 @@ Route::group(['middleware' => 'auth'], function () {
      */
     Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@hasParent']);
 
+    /**
+     * Routes related to teachers
+     */
+    Route::get('teachers',['as'=>'teachers','uses'=>'TeacherController@index']);
+    Route::get('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@create']);
+    Route::post('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@store']);
+
 
 
     /**
@@ -52,12 +59,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
 
 
+
     /**
      * Routes related to classes
      */
     Route::get('classes',['as'=>'classes','uses'=>'ClassController@index']);
 
 });
+
+
+
+
+
+
 
 
 

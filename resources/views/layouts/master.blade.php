@@ -141,9 +141,9 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{url('/')}}">
-                        <i class="fa fa-dashboard"></i> <span>Teachers</span>
+                <li @if(route('teachers')===Request::url()) class="active" @endif>
+                    <a href="{{route('teachers')}}">
+                        <i class="fa fa-users"></i> <span>Teachers</span>
                     </a>
                 </li>
 
