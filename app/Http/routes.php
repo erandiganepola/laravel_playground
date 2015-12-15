@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     /**
      * Routes related to parents
      */
-    Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@search']);
+    Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@hasParent']);
 
 
 

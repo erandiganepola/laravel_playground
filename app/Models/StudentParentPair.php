@@ -33,4 +33,19 @@ class StudentParentPair extends BaseModel
         return $this->isGuardian;
     }
 
+
+    /**
+     * Array representation of a student parent pair
+     *
+     * @return array
+     */
+    public function toArray(){
+        $pair=array();
+        $pair['student']=$this->student->toArray();
+        $pair['parent']=$this->parent->toArray();
+        $pair['isGuardian']=$this->isGuardian();
+
+        return $pair;
+
+    }
 }

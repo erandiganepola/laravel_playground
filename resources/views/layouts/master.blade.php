@@ -199,7 +199,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; <a href="http://areyouready.uom.lk">Are You Ready? 2015</a>.</strong> All rights
+        <strong>Copyright &copy; <a href="#">Eduze</a>.</strong> All rights
         reserved.
     </footer>
 </div><!-- ./wrapper -->

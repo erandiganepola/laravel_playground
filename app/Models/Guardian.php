@@ -9,6 +9,12 @@ use PDO;
 class Guardian extends BaseModel
 {
 
+    /**
+     * Get the parent from the NIC
+     *
+     * @param $nic
+     * @return Guardian
+     */
     public static function fromNIC($nic)
     {
         $pdo = DB::connection()->getPdo();
@@ -25,6 +31,26 @@ class Guardian extends BaseModel
         $guardian->loadFromData($result);
         return $guardian;
 
+    }
+
+
+    /**
+     * Find a parent from NIC using the static fromNIC method.
+     * Return null, if not available
+     *
+     * @param $nic
+     * @return Guardian|null
+     */
+    public static function find($nic){
+        $guardian=null;
+        try{
+            $guardian=self::fromNIC($nic);
+        }
+        catch(Exception $e){
+            return null;
+        }
+
+        return $guardian;
     }
 
 
@@ -109,4 +135,13 @@ class Guardian extends BaseModel
     }
 
 
+    /**
+     * Get the array represention of the attributes of a parent object.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array();
+    }
 }

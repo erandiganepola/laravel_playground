@@ -66,7 +66,8 @@
                     <label for="address" class="col-sm-2 control-label">Address</label>
 
                     <div class="col-sm-10">
-                        <input type="text" required class="form-control" id="address" placeholder="Address">
+                        <input type="text" required class="form-control" id="address" placeholder="Address"
+                               name="address">
                     </div>
                 </div>
 
@@ -75,7 +76,8 @@
                     <label for="birthday" class="col-sm-2 control-label">Date of Birth</label>
 
                     <div class="col-sm-4">
-                        <input type="date" class="form-control" id="birthday" placeholder="Date of Birth" required>
+                        <input type="date" class="form-control" id="birthday" placeholder="Date of Birth" required
+                               name="birthday">
                     </div>
                 </div>
 
@@ -110,7 +112,7 @@
 
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" id="parentSearchNic"
-                                       placeholder="Parent's NIC (xxxxxxxxxV)"
+                                       placeholder="Parent's NIC (xxxxxxxxxV)" name="parenSearchNic"
                                        required pattern="{10}" oninput="searchParent()">
 
                                 <div class="container-fluid collapse" id="parentSearchNicLabel">
@@ -148,7 +150,7 @@
 
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="parentgender" value="F">
+                                            <input type="radio" name="parentGender" value="F">
                                             Female
                                         </label>
                                     </div>
@@ -209,6 +211,14 @@
                 type: 'post',
                 success: function (data) {
                     console.log(data);
+                    if (data == 1) {
+
+                    }
+                    else {
+                        $('#parentDetails').collapse('show');
+                        $('#parentName').prop('required', true);
+                        $('#parentPhone').children().eq(0).prop('required', true);
+                    }
                 }
             });
         }

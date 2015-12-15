@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guardian;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -89,8 +90,13 @@ class ParentController extends Controller
 
 
 
-    public function search($nic){
-        Log::info($nic);
-        return 0;
+    /**
+     * Determine whether a parent is available or not by the NIC
+     *
+     * @param $nic
+     * @return bool
+     */
+    public function hasParent($nic){
+        return Guardian::find($nic)!=null? 1:0;
     }
 }

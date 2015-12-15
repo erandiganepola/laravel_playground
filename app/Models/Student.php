@@ -281,4 +281,25 @@ class Student extends BaseModel
         $this->phones = $phones;
     }
 
+
+
+    /**
+     * Get the student as an PHP array.
+     * To be used in the JSON form.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $student=array();
+        $student['id']=$this->id;
+        $student['date_of_birth']=$this->date_of_birth;
+        $student['address']=$this->address;
+        $student['name']=$this->name;
+        $student['gender']=$this->gender;
+        $student['phones']=$this->phones;
+
+        return $student;
+    }
+
 }
