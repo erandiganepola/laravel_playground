@@ -26,7 +26,7 @@ class TestController extends Controller
     public function show()
     {
         $mc = new MusicClass();
-        $mc->setIDCode("A");
+        $mc->setIDCode("B");
         $mc->setName("AA");
         $mc->setDayOfWeek(Utils::WEEK_DAY_THURSDAY);
         $mc->setDuration(2.2);
@@ -36,6 +36,9 @@ class TestController extends Controller
         $mc->setStartDate("2012-12-12");
         MusicClass::insertClass($mc);
         echo $mc->getID();
+
+        $mcs = MusicClass::getClasses();
+        var_dump($mcs);
 
 
 

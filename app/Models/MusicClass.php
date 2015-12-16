@@ -217,7 +217,27 @@ class MusicClass extends BaseModel
         $this->id_edition = null;
     }
 
+    /**
+     * Get all the classes that are available in the database.
+     * Returned as an array of class objects
+     *
+     * @return array MusicClass[]
+     */
+    public static function getClasses()
+    {
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("SELECT * FROM class");
+        $statement->execute();
 
+        $classes = array();
+       while($result = $statement->fetch()) {
+            $mc = new MusicClass();
+            $mc->loadFromData($result);
+            $classes[] = $mc;
+
+        }
+        return $classes;
+    }
 
     /**
      * Get the class as an PHP array.
