@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Log;
 
 class ClassController extends Controller
 {
@@ -37,7 +38,9 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info($request->all());
+
+        return back()->withInput();
     }
 
     /**

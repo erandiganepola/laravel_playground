@@ -52,13 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('teachers',['as'=>'teachers','uses'=>'TeacherController@index']);
     Route::get('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@create']);
     Route::post('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@store']);
-
-
-
-    /**
-     * Routes related to testing purposes
-     */
-    Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
+    Route::get('teacher/{id}',['as'=>'teacher','uses'=>'TeacherController@show']);
 
 
 
@@ -68,6 +62,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('classes',['as'=>'classes','uses'=>'ClassController@index']);
     Route::get('addClass',['as'=>'addClass','uses'=>'ClassController@create']);
     Route::post('addClass',['as'=>'addClass','uses'=>'ClassController@store']);
+
+
+    /**
+     * Routes related to testing purposes
+     */
+    Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
+
 
 });
 
