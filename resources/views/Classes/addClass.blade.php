@@ -86,10 +86,19 @@
                                 Group Class
                             </label>
                         </div>
-
                     </div>
-
                 </div>
+
+                @for($i=0;$i<3;$i++)
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Class Name</label>
+
+                    <div class="col-sm-4">
+                        <input type="text" required class="form-control" id="name" placeholder="Name" name="name"
+                               value="{{old('name')}}">
+                    </div>
+                </div>
+                @endforeach
 
 
                 <div class="box box-default">
