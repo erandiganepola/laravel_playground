@@ -90,7 +90,9 @@ class TeacherController extends Controller
      */
     public function show($id)
     {
-        //
+        $teacher=Teacher::fromID($id);
+
+        return view('Teachers.profile',['teacher'=>$teacher]);
     }
 
     /**

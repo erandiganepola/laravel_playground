@@ -65,9 +65,9 @@
                     <ul class="nav nav-stacked">
                         <li><a href="#">Address <span class="pull-right text-bold">{{$teacher->getAddress()}}</span></a>
                         </li>
-                        <li><a href="#">Gender <span class="pull-right text-bold">{{$student->getGender()}}</span></a>
+                        <li><a href="#">Gender <span class="pull-right text-bold">{{$teacher->getGender()}}</span></a>
                         </li>
-                        <li><a href="#">NIC <span class="pull-right text-bold">{{$student->getNic()}}</span></a>
+                        <li><a href="#">NIC <span class="pull-right text-bold">{{$teacher->getNic()}}</span></a>
                         </li>
                     </ul>
                 </div>
