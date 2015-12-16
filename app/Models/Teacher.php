@@ -46,6 +46,34 @@ class Teacher extends BaseModel
         return $teacher;
     }
 
+
+    /**
+     * Find a teacher from the NIC. null can be thrown since there's a great possibility in mistaking the NIC
+     * Thus, no exception is thrown
+     *
+     * @param $nic
+     * @return Teacher|null
+     */
+    public function fromNIC($nic)
+    {
+        $pdo = DB::connection()->getPdo();
+
+        //get teacher details from teacher table
+        $statement = $pdo->prepare("SELECT * FROM teacher WHERE nic = :nic;");
+        $statement->bindParam("nic", $nic, PDO::PARAM_STR);
+        $statement->execute();
+
+        if ($statement->rowCount() != 1)
+            return null;
+
+        $result = $statement->fetch();
+
+        $teacher = new Teacher();
+        $teacher->loadFromData($result);
+        return $teacher;
+    }
+
+
     /**
      * Insert an teacher to the database.
      *
@@ -56,23 +84,25 @@ class Teacher extends BaseModel
     public static function insertTeacher($teacher)
     {
         $pdo = DB::connection()->getPdo();
-        
+
         $statement = $pdo->prepare("INSERT INTO teacher (name,gender,nic,address,date_of_birth,active) VALUES (:name,:gender,:nic, :address, :date_of_birth, :active);");
 
 
-        $result_insert_teacher = $statement->execute(array("name" => $teacher->getName(), "gender" => Person::genderToString($teacher->getGender()), "nic" => $teacher->getNic(), "address" => $teacher->getAddress(), "date_of_birth" => $teacher->getDOB(),"active" => $teacher->getActive()));
-        
-        $phones=$teacher->getPhones();
-        foreach($phones as $phone){
-       
-            $statement = $pdo->prepare("INSERT INTO teacher_telephone (teacher_id,telephone_number) VALUES (:teacher_id,:telephone_number);");
-            $result_insert_teacher_telephone = $statement->execute(array("teacher_id" => $teacher->getId(), "telephone_number" =>$phone ));
-            if (!$result_insert_teacher_telephone)
-                throw new Exception("Unable to insert to teacher_telephone");
-            
+        $result_insert_teacher = $statement->execute(array("name" => $teacher->getName(), "gender" => Person::genderToString($teacher->getGender()), "nic" => $teacher->getNic(), "address" => $teacher->getAddress(), "date_of_birth" => $teacher->getDOB(), "active" => $teacher->isActive()));
+
+
+        $phones = $teacher->getPhones();
+        foreach ($phones as $phone) {
+            if (!empty($phone)) {
+                $statement = $pdo->prepare("INSERT INTO teacher_telephone (teacher_id,telephone_number) VALUES (:teacher_id,:telephone_number);");
+                $phoneAdded = $statement->execute(array("teacher_id" => $teacher->getId(), "telephone_number" => $phone));
+
+                if (!$phoneAdded)
+                    throw new Exception("Unable to insert to teacher_telephone");
+            }
         }
-        
-         if (!$result_insert_teacher)
+
+        if (!$result_insert_teacher)
             throw new Exception("Unable to insert teacher");
 
     }
@@ -104,7 +134,7 @@ class Teacher extends BaseModel
         $fetchPhoneStatement = $pdo->prepare("SELECT telephone_number FROM teacher_telephone WHERE ID = :teacherID");
         $fetchPhoneStatement->bindParam("teacherID", $this->id, PDO::PARAM_STR);
         $fetchPhoneStatement->execute();
-        $phoneResults = $fetchPhoneStatement->fetch();
+        $phoneResults = $fetchPhoneStatement->fetchAll();
 
         $this->phones = array();
 
@@ -136,8 +166,8 @@ class Teacher extends BaseModel
         return $teachers;
     }
 
-    
-     /**
+
+    /**
      * Get all instruments of a teacher
      *
      * @return array Instrument[]
@@ -146,7 +176,7 @@ class Teacher extends BaseModel
     {
         $pdo = DB::connection()->getPdo();
         $statement = $pdo->prepare("SELECT instrument_name FROM teacher_instrument WHERE teacher_id=:teacherID");
-        $statement->bindParam("teacherID", $this->teacher_id, PDO::PARAM_STR);  
+        $statement->bindParam("teacherID", $this->teacher_id, PDO::PARAM_STR);
         $statement->execute();
 
         $results = $statement->fetchAll();
@@ -157,36 +187,35 @@ class Teacher extends BaseModel
         }
         return $instruments;
     }
-    
-      /**
+
+    /**
      * Add an instruments to a teacher
-     
      * @return none
      */
-    public function addInstrument($instrument_name)
+    public
+    function addInstrument($instrument_name)
     {
         $pdo = DB::connection()->getPdo();
         $statement = $pdo->prepare("INSERT INTO teacher_instrument (teacher_id,instrument_name) VALUES (:teacher_id,:instrument_name);");
-        $result_insert_teacher_instrument = $statement->execute(array("teacher_id" => $this->getId(), "instrument_name" =>$instrument_name ));
+        $result_insert_teacher_instrument = $statement->execute(array("teacher_id" => $this->getId(), "instrument_name" => $instrument_name));
         if (!$result_insert_teacher_instrument)
             throw new Exception("Unable to insert to teacher_instrument");
-        
+
     }
-    
-    
-    
-     /**
+
+
+    /**
      * getters and setters
-     * 
+     *
      *
      * @return array Teacher[]
      */
-    
+
     public function getID()
     {
         return $this->id;
     }
-    
+
     public function getPhone()
     {
         return $this->phones;
@@ -202,9 +231,9 @@ class Teacher extends BaseModel
         return $this->address;
     }
 
-    public function  getActive()
+    public function  isActive()
     {
-        return $this->active;
+        return $this->active == 1;
     }
 
     public function  getName()
@@ -221,7 +250,7 @@ class Teacher extends BaseModel
     {
         return $this->nic;
     }
-    
+
     public function setDOB($value)
     {
         $this->date_of_birth = $value;
@@ -232,9 +261,9 @@ class Teacher extends BaseModel
         $this->address = $value;
     }
 
-    public function setEmail($value)
+    public function setNIC($nic)
     {
-        $this->email = $value;
+        $this->nic = $nic;
     }
 
     public function setName($value)
@@ -257,7 +286,12 @@ class Teacher extends BaseModel
         $this->phones = $phones;
     }
 
-
+    /**
+     * Mark the teacher as active
+     */
+    public function activate(){
+        $this->active=1;
+    }
 
     /**
      * Get the teacher as an PHP array.
@@ -267,14 +301,14 @@ class Teacher extends BaseModel
      */
     public function toArray()
     {
-        $teacher=array();
-        $teacher['teacher_id']=$this->teacher_id;
-        $teacher['name']=$this->name;
-        $teacher['gender']=$this->gender;
-        $teacher['nic']=$this->nic;
-        $teacher['address']=$this->address;
-        $teacher['date_of_birth']=$this->date_of_birth;
-        $teacher['active']=$this->active;
+        $teacher = array();
+        $teacher['teacher_id'] = $this->teacher_id;
+        $teacher['name'] = $this->name;
+        $teacher['gender'] = $this->gender;
+        $teacher['nic'] = $this->nic;
+        $teacher['address'] = $this->address;
+        $teacher['date_of_birth'] = $this->date_of_birth;
+        $teacher['active'] = $this->active;
 
         return $teacher;
     }

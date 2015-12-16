@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Models\Person;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Log;
+use Exception;
 
 class TeacherController extends Controller
 {
@@ -40,8 +44,42 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->all());
-        return "Got it";
+        $validator=Validator::make($request->all(),array(
+            'name'=>'required',
+            'gender'=>'required|in:M,F',
+            'nic'=>'required',
+            'birthday'=>'required|date|before:'.date('Y-m-d'),
+            'phone'=>'required|array',
+            'address'=>'required'
+        ));
+
+        //if validation fails
+        if($validator->fails()){
+            return back()->with('errors',$validator->errors()->all())->withInput();
+        }
+
+        $teacher=new Teacher();
+        $teacher->setName($request->name);
+        $teacher->setNIC($request->nic);
+        $teacher->setGender(Person::parseGender($request->gender));
+        $teacher->setPhones(array_filter($request->phone));
+        $teacher->setDOB($request->birthday);
+        $teacher->setAddress($request->address);
+        $teacher->activate();
+
+        //insert the teacher in a transaction
+        DB::beginTransaction();
+        try{
+            Teacher::insertTeacher($teacher);
+        }
+        catch(Exception $e){
+            DB::rollback();
+            Log::error($e->getMessage());
+            return back()->with('errors',array("Something went wrong!"))->withInput();
+        }
+        DB::commit();
+
+        return back()->with('success', $request->name . " added successfully!");
     }
 
     /**

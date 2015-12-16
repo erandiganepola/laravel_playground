@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
      */
     Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@hasParent']);
 
+
     /**
      * Routes related to teachers
      */

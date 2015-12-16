@@ -12,6 +12,35 @@
 
 @section('content')
 
+
+    {{--Error--}}
+    @if(Session::has('errors'))
+
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> Oops!</h4>
+            <ul>
+                @foreach(Session::get('errors') as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+
+    @endif
+
+    {{--Success Message--}}
+    @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-check"></i> Successful!</h4>
+            {{Session::get('success')}}
+        </div>
+    @endif
+
+
+
+
+    {{--Form to add a teacher--}}
     <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">Teacher Details</h3>
@@ -28,7 +57,8 @@
                     <label for="name" class="col-sm-2 control-label">Name</label>
 
                     <div class="col-sm-10">
-                        <input type="text" required class="form-control" id="name" placeholder="Name" name="name">
+                        <input type="text" required class="form-control" id="name" placeholder="Name" name="name"
+                               value="{{old('name')}}">
                     </div>
                 </div>
 
@@ -38,14 +68,16 @@
                     <div class="col-sm-10">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="genderMale" value="M" checked="checked">
+                                <input type="radio" name="gender" id="genderMale" value="M"
+                                       @if(old('gender')==='M') checked @endif>
                                 Male
                             </label>
                         </div>
 
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="genderFemale" value="F">
+                                <input type="radio" name="gender" id="genderFemale" value="F"
+                                       @if(old('gender')==='F') checked @endif>
                                 Female
                             </label>
                         </div>
@@ -55,10 +87,11 @@
 
 
                 <div class="form-group">
-                    <label for="email" class="col-sm-2 control-label">Email</label>
+                    <label for="nic" class="col-sm-2 control-label">NIC</label>
 
-                    <div class="col-sm-6">
-                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                    <div class="col-sm-4">
+                        <input type="text" pattern="[0-9]{9}[A-Z]{1}" class="form-control" id="nic"
+                               placeholder="NIC" name="nic" required value="{{old('nic')}}">
                     </div>
                 </div>
 
@@ -67,7 +100,7 @@
 
                     <div class="col-sm-10">
                         <input type="text" required class="form-control" id="address" placeholder="Address"
-                               name="address">
+                               name="address" value="{{old('address')}}">
                     </div>
                 </div>
 
@@ -77,7 +110,7 @@
 
                     <div class="col-sm-4">
                         <input type="date" class="form-control" id="birthday" placeholder="Date of Birth" required
-                               name="birthday">
+                               name="birthday" value="{{old('birthday')}}">
                     </div>
                 </div>
 
@@ -87,13 +120,11 @@
 
                         <div class="col-sm-4">
                             <input type="tel" class="form-control" id="phone[]" placeholder="Phone"
-                                   name="phone[]">
+                                   name="phone[]" value="{{old('phone')[$i-1]}}">
                         </div>
                     </div>
                     <div class="clearfix"></div>
                 @endfor
-
-
 
 
             </div><!-- /.box-body -->

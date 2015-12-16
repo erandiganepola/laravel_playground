@@ -20,6 +20,7 @@ class Student extends BaseModel
     private $name;
     private $gender;
     private $phones;
+    private $addedOn;
 
 
     /**
@@ -47,6 +48,8 @@ class Student extends BaseModel
 
         return $student;
     }
+
+
 
 
     /**
@@ -198,6 +201,7 @@ class Student extends BaseModel
         $this->email = $data["email"];
         $this->name = $data["name"];
         $this->gender = Person::parseGender($data["gender"]);
+        $this->addedOn=$data['added_on'];
 
 
         //get the telephone numbers associated to the student
@@ -209,7 +213,6 @@ class Student extends BaseModel
 
         $this->phones = array();
 
-        Log::info($phoneResults);
         foreach ($phoneResults as $phoneResult) {
             if(!in_array($phoneResult,$this->phones)){
                 $this->phones[] = $phoneResult;
@@ -270,6 +273,10 @@ class Student extends BaseModel
     public function  getGender()
     {
         return $this->gender;
+    }
+
+    public function getAddedOn(){
+        return $this->addedOn;
     }
 
     public function setDOB($value)

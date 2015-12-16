@@ -131,31 +131,31 @@
 
                 <li @if(route('classes')===Request::url()) class="active" @endif>
                     <a href="{{route('classes')}}">
-                        <i class="fa fa-dashboard"></i> <span>Classes</span>
+                        <i class="fa  fa-book"></i> <span>Classes</span>
                     </a>
                 </li>
 
                 <li @if(route('students')===Request::url()) class="active" @endif>
                     <a href="{{route('students')}}">
-                        <i class="fa fa-users"></i> <span>Students</span>
+                        <i class="fa fa-graduation-cap"></i> <span>Students</span>
                     </a>
                 </li>
 
                 <li @if(route('teachers')===Request::url()) class="active" @endif>
                     <a href="{{route('teachers')}}">
-                        <i class="fa fa-users"></i> <span>Teachers</span>
+                        <i class="fa  fa-pencil-square-o"></i> <span>Teachers</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{url('/')}}">
-                        <i class="fa fa-dashboard"></i> <span>Concerts</span>
+                        <i class="fa fa-line-chart"></i> <span>Concerts</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{url('/')}}">
-                        <i class="fa fa-dashboard"></i> <span>Settings</span>
+                        <i class="fa  fa-wrench"></i> <span>Settings</span>
                     </a>
                 </li>
 

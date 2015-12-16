@@ -45,14 +45,12 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->all());
-
         $validator = Validator::make($request->all(), array(
             'name' => 'required',
             'gender' => 'required|in:F,M',
             'email' => 'required|email',
             'address' => 'required',
-            'birthday' => 'required|date',
+            'birthday' => 'required|date|before:' . date('Y-m-d'),
             'phone' => 'required|array',
             'parentSearchNic' => 'required',
             'parentGender' => 'in:F,M',
@@ -103,25 +101,23 @@ class StudentController extends Controller
 
         DB::beginTransaction();
         try {
-            $student=Student::insertStudent($student);
+            $student = Student::insertStudent($student);
 
             //add parent if not available
             if (!$parentAvailable)
                 Guardian::insertParent($parent);
 
-
             //add parent to the student
-            if(isset($request->isGuardian)){
+            if (isset($request->isGuardian)) {
                 $student->setGuardian($parent);
-            }
-            else{
+            } else {
                 $student->addParent($parent);
             }
 
         } catch (Exception $e) {
             DB::rollback();
             Log::error($e->getMessage());
-            return back()->with('errors',array("Something went wrong!"))->withInput();
+            return back()->with('errors', array("Something went wrong!"))->withInput();
         }
         DB::commit();
 

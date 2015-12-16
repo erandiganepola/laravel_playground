@@ -27,6 +27,11 @@
                 table td, th {
                     text-align: center;
                 }
+
+                td:hover{
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
             </style>
 
             <table class="table table-condensed table-hover table-hover" id="studentTable">
@@ -36,19 +41,21 @@
                     <th>Name</th>
                     <th>Contact No</th>
                     <th>Gender</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($students as $student)
-                    <tr>
+                    <tr onclick="window.location='{{route('students')}}'">
                         <td>{{$student->getID()}}</td>
                         <td>{{$student->getName()}}</td>
                         <td>
                             @foreach($student->getPhones() as $phone)
-                                {{$phone}},
+                                {{$phone}}<br>
                             @endforeach
                         </td>
                         <td>{{$student->getGender()}}</td>
+
                     </tr>
                 @endforeach
                 </tbody>
