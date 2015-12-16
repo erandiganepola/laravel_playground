@@ -65,6 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
      * Routes related to classes
      */
     Route::get('classes',['as'=>'classes','uses'=>'ClassController@index']);
+    Route::get('addClass',['as'=>'addClass','uses'=>'ClassController@create']);
+    Route::post('addClass',['as'=>'addClass','uses'=>'ClassController@store']);
 
 });
 
