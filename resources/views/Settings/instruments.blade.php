@@ -1,12 +1,15 @@
 @extends('layouts.master')
 
+
 @section('page_header')
-    Teachers
+    Instruments
 @endsection
+
 
 @section('sub_header')
     Symphony Music School
 @endsection
+
 
 @section('content')
 
@@ -15,7 +18,7 @@
 
     {{--Basic buttons to add student and etc--}}
     <div class="container-fluid" style="margin-bottom: 5px;">
-        <a href="{{route('addTeacher')}}" class="btn btn-sm btn-primary pull-right">Add Teacher</a>
+        <a href="{{route('addTeacher')}}" class="btn btn-sm btn-primary pull-right">Add Instrument</a>
     </div>
 
     <div class="box box-info with-border">
@@ -32,26 +35,18 @@
                 }
             </style>
 
-            <table class="table table-condensed table-hover table-hover" id="teacherTable">
+            <table class="table table-condensed table-hover table-hover" id="instrumentTable">
                 <thead>
                 <tr>
-                    <th>Teacher ID</th>
-                    <th>Name</th>
-                    <th>Contact No</th>
-                    <th>Gender</th>
+                    <th>Instrument Name</th>
+
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($teachers as $teacher)
+                @foreach($instruments as $instrument)
                     <tr>
-                        <td>{{$teacher->getID()}}</td>
-                        <td>{{$teacher->getName()}}</td>
-                        <td>
-                            @foreach($teacher->getPhones() as $phone)
-                                {{$phone}}<br>
-                            @endforeach
-                        </td>
-                        <td>{{$teacher->getGender()}}</td>
+                        <td>{{$instrument}}</td>
+
                     </tr>
                 @endforeach
                 </tbody>
@@ -62,8 +57,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#teacherTable').DataTable();
+            $('#instrument').DataTable();
         });
     </script>
-
 @endsection
