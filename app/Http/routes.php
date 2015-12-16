@@ -64,6 +64,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('addClass',['as'=>'addClass','uses'=>'ClassController@store']);
 
 
+
+    /**
+     * Routes related to settings
+     */
+    Route::get('settings',['as'=>'settings','uses'=>function(){
+        return View('Settings.settings');
+    }]);
+
+
+    /**
+     * Routes related to profiles
+     */
+    Route::get('profile',['as'=>'profile','uses'=>function(){
+        return View('Settings.profile');
+    }]);
+
+    /**
+     * Routes related to Instruments
+     */
+    Route::get('instruments',['as'=>'instruments','uses'=>'InstrumentController@index']);
+
+
     /**
      * Routes related to testing purposes
      */

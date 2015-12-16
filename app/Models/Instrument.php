@@ -71,18 +71,5 @@ class Instrument extends BaseModel
         return $instruments;
     }
 
-    
-    
-    public function getPhones()
-    {
-        return $this->phones;
-    }
-
-    public function setPhones($phones)
-    {
-        $this->phones = $phones;
-    }
-
-
 
 }
