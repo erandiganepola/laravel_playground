@@ -54,7 +54,7 @@ class Teacher extends BaseModel
      * @param $nic
      * @return Teacher|null
      */
-    public function fromNIC($nic)
+    public static function fromNIC($nic)
     {
         $pdo = DB::connection()->getPdo();
 
@@ -90,8 +90,8 @@ class Teacher extends BaseModel
 
         $result_insert_teacher = $statement->execute(array("name" => $teacher->getName(), "gender" => Person::genderToString($teacher->getGender()), "nic" => $teacher->getNic(), "address" => $teacher->getAddress(), "date_of_birth" => $teacher->getDOB(), "active" => $teacher->isActive()));
 
-
         $phones = $teacher->getPhones();
+        $teacher=self::fromNIC($teacher->getNic());
         foreach ($phones as $phone) {
             if (!empty($phone)) {
                 $statement = $pdo->prepare("INSERT INTO teacher_telephone (teacher_id,telephone_number) VALUES (:teacher_id,:telephone_number);");
@@ -131,15 +131,18 @@ class Teacher extends BaseModel
 
         //get the telephone numbers associated to the teacher
         $pdo = DB::connection()->getPdo();
-        $fetchPhoneStatement = $pdo->prepare("SELECT telephone_number FROM teacher_telephone WHERE ID = :teacherID");
-        $fetchPhoneStatement->bindParam("teacherID", $this->id, PDO::PARAM_STR);
+        $fetchPhoneStatement = $pdo->prepare("SELECT telephone_number FROM teacher_telephone WHERE teacher_id = :teacherID");
+        $fetchPhoneStatement->bindParam("teacherID", $this->teacher_id, PDO::PARAM_STR);
         $fetchPhoneStatement->execute();
-        $phoneResults = $fetchPhoneStatement->fetchAll();
+        $phoneResults = $fetchPhoneStatement->fetch();
 
         $this->phones = array();
 
+        Log::info($phoneResults);
         foreach ($phoneResults as $phoneResult) {
-            $this->phones[] = $phoneResult;
+            if(!in_array($phoneResult,$this->phones)){
+                $this->phones[] = $phoneResult;
+            }
         }
 
     }
@@ -161,7 +164,7 @@ class Teacher extends BaseModel
 
         $teachers = array();
         foreach ($results as $result) {
-            $teachers[] = self::fromID($result["ID"]);
+            $teachers[] = self::fromID($result["teacher_id"]);
         }
         return $teachers;
     }
@@ -213,7 +216,7 @@ class Teacher extends BaseModel
 
     public function getID()
     {
-        return $this->id;
+        return $this->teacher_id;
     }
 
     public function getPhone()

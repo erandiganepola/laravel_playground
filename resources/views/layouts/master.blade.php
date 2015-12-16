@@ -149,15 +149,15 @@
 
                 <li>
                     <a href="{{url('/')}}">
-                        <i class="fa fa-line-chart"></i> <span>Concerts</span>
+                        <i class="fa  fa-wrench"></i> <span>Concerts</span>
+                    </a>
+                </li>
+                <li @if(route('settings')===Request::url()) class="active" @endif>
+                    <a href="{{route('settings')}}">
+                        <i class="fa fa-line-chart"></i> <span>Settings</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{url('/')}}">
-                        <i class="fa  fa-wrench"></i> <span>Settings</span>
-                    </a>
-                </li>
 
 
             </ul>
