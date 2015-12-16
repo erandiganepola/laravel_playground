@@ -72,4 +72,9 @@ class Instrument extends BaseModel
     }
 
 
+    public function toArray()
+    {
+        return array();
+    }
+
 }

@@ -90,15 +90,21 @@
                 </div>
 
                 @for($i=0;$i<3;$i++)
-                <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Class Name</label>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Instrument {{$i+1}}</label>
 
-                    <div class="col-sm-4">
-                        <input type="text" required class="form-control" id="name" placeholder="Name" name="name"
-                               value="{{old('name')}}">
+                        <div class="col-sm-4">
+                            <select @if($i==0) required @endif class="form-control" placeholder="Instrument {{$i+1}}"
+                                    name="instrument[]">
+                                <option>Select Instrument</option>
+
+                                @foreach($instruments as $instrument)
+                                    <option @if(old('instrument')[$i]===$instrument) selected @endif>{{$instrument}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-                @endforeach
+                @endfor
 
 
                 <div class="box box-default">
@@ -140,19 +146,23 @@
                                     <option id="day_of_week_monday" @if(old('day_of_week')==="MON") selected @endif>
                                         Monday
                                     </option>
-                                    <option id="day_of_week_tuesday" @if(old('day_of_week')==="TUE") selected @endif>
+                                    <option id="day_of_week_tuesday"
+                                            @if(old('day_of_week')==="TUE") selected @endif>
                                         Tuesday
                                     </option>
-                                    <option id="day_of_week_wednesday" @if(old('day_of_week')==="WED") selected @endif>
+                                    <option id="day_of_week_wednesday"
+                                            @if(old('day_of_week')==="WED") selected @endif>
                                         Wednesday
                                     </option>
-                                    <option id="day_of_week_thursday" @if(old('day_of_week')==="THU") selected @endif>
+                                    <option id="day_of_week_thursday"
+                                            @if(old('day_of_week')==="THU") selected @endif>
                                         Thursday
                                     </option>
                                     <option id="day_of_week_friday" @if(old('day_of_week')==="FRI") selected @endif>
                                         Friday
                                     </option>
-                                    <option id="day_of_week_saturday" @if(old('day_of_week')==="SAT") selected @endif>
+                                    <option id="day_of_week_saturday"
+                                            @if(old('day_of_week')==="SAT") selected @endif>
                                         Saturday
                                     </option>
                                     <option id="day_of_week_sunday" @if(old('day_of_week')==="SUN") selected @endif>
@@ -163,7 +173,8 @@
                             </div>
 
                             <div class="col-sm-2">
-                                <input type="time" class="form-control" id="time" name="time" value="{{old('time')}}"/>
+                                <input type="time" class="form-control" id="time" name="time"
+                                       value="{{old('time')}}"/>
 
                             </div>
                         </div>

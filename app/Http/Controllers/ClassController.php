@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Instrument;
+use App\Models\MusicClass;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -27,7 +29,8 @@ class ClassController extends Controller
      */
     public function create()
     {
-        return view('classes.addClass');
+        $instruments=Instrument::getInstruments();
+        return view('classes.addClass',['instruments'=>$instruments]);
     }
 
     /**
