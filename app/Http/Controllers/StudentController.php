@@ -126,6 +126,8 @@ class StudentController extends Controller
 
     }
 
+
+
     /**
      * Display the specified resource.
      *
@@ -134,7 +136,8 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $student=Student::fromID($id);
+        return view('Students.profile',['student'=>$student]);
     }
 
     /**

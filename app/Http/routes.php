@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('students',['as'=>'students','uses'=>'StudentController@index']);
     Route::get('addStudent',['as'=>'addStudent','uses'=>'StudentController@create']);
     Route::post('addStudent',['as'=>'addStudent','uses'=>'StudentController@store']);
+    Route::get('student/{id}',['as'=>'student','uses'=>'StudentController@show']);
 
     /**
      * Routes related to parents

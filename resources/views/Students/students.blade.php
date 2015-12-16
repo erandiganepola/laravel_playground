@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                 @foreach($students as $student)
-                    <tr onclick="window.location='{{route('students')}}'">
+                    <tr onclick="window.location='{{route('student',['id'=>$student->getID()])}}'">
                         <td>{{$student->getID()}}</td>
                         <td>{{$student->getName()}}</td>
                         <td>
