@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Log;
+use DB;
+use Exception;
 
 class InstrumentController extends Controller
 {
@@ -42,19 +46,20 @@ class InstrumentController extends Controller
 
         {
             $validator=Validator::make($request->all(),array(
-                'name'=>'required',
-
+                'name'=>'required'
             ));
 
             //if validation fails
             if($validator->fails()){
+
                 return back()->with('errors',$validator->errors()->all())->withInput();
             }
 
-            $instrument=new Instrument();
-            $name = name;
-//            $instrument->insertInstrument($request->name);
+           // $instrument=new Instrument();
+           // $name = name;
 
+
+           $name=$request->name;
 
 
             DB::beginTransaction();
