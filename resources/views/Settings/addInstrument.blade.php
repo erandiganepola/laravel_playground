@@ -48,7 +48,7 @@
 
 
             <!-- form start -->
-            <form class="form-horizontal" action="{{route('addStudent')}}" method="post">
+            <form class="form-horizontal" action="{{route('addInstrument')}}" method="post">
 
                 {{csrf_field()}}
 

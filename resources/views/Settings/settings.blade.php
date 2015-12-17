@@ -18,7 +18,7 @@
 
         <div class="small-box bg-yellow">
             <div class="inner">
-                <h3>44</h3>
+                <h3>2</h3>
 
                 <p>User Profiles</p>
             </div>
@@ -33,7 +33,7 @@
 
         <div class="small-box bg-aqua">
             <div class="inner">
-                <h3>150</h3>
+                <h3>4</h3>
 
                 <p>Instruments</p>
             </div>
