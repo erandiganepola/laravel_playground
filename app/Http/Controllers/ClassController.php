@@ -33,7 +33,7 @@ class ClassController extends Controller
     public function create()
     {
         $instruments = Instrument::getInstruments();
-        return view('classes.addClass', ['instruments' => $instruments]);
+        return view('Classes.addClass', ['instruments' => $instruments]);
     }
 
     /**
