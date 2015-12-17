@@ -143,29 +143,32 @@
 
                             <div class="col-sm-2">
                                 <select class="form-control" id="day_of_week" name="day_of_week">
-                                    <option id="day_of_week_monday" @if(old('day_of_week')==="MON") selected @endif>
+                                    <option id="day_of_week_monday" value="MON"
+                                            @if(old('day_of_week')==="MON") selected @endif>
                                         Monday
                                     </option>
-                                    <option id="day_of_week_tuesday"
+                                    <option id="day_of_week_tuesday" value="TUE"
                                             @if(old('day_of_week')==="TUE") selected @endif>
                                         Tuesday
                                     </option>
-                                    <option id="day_of_week_wednesday"
-                                            @if(old('day_of_week')==="WED") selected @endif>
+                                    <option id="day_of_week_wednesday" value="WED"
+                                            @if(old('day_of_week')==="WED")  selected @endif>
                                         Wednesday
                                     </option>
-                                    <option id="day_of_week_thursday"
+                                    <option id="day_of_week_thursday" value="THU"
                                             @if(old('day_of_week')==="THU") selected @endif>
                                         Thursday
                                     </option>
-                                    <option id="day_of_week_friday" @if(old('day_of_week')==="FRI") selected @endif>
+                                    <option id="day_of_week_friday" value="FRI"
+                                            @if(old('day_of_week')==="FRI") selected @endif>
                                         Friday
                                     </option>
-                                    <option id="day_of_week_saturday"
+                                    <option id="day_of_week_saturday" value="SAT"
                                             @if(old('day_of_week')==="SAT") selected @endif>
                                         Saturday
                                     </option>
-                                    <option id="day_of_week_sunday" @if(old('day_of_week')==="SUN") selected @endif>
+                                    <option id="day_of_week_sunday" value="SUN"
+                                            @if(old('day_of_week')==="SUN") selected @endif>
                                         Sunday
                                     </option>
                                 </select>

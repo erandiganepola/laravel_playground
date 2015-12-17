@@ -17,6 +17,7 @@ class MusicClass extends BaseModel
     private $type;
     private $dayOfWeek;
     private $time;
+    private $instruments;
 
 
     const TYPE_INDIVIDUAL = "I";
@@ -24,7 +25,7 @@ class MusicClass extends BaseModel
 
     public function getID()
     {
-        return "".($this->id_code)."-".($this->id_edition);
+        return "" . ($this->id_code) . "-" . ($this->id_edition);
     }
 
     public function getIDCode()
@@ -35,7 +36,7 @@ class MusicClass extends BaseModel
 
     public function setIDCode($value)
     {
-        if(is_null($this->id_code))
+        if (is_null($this->id_code))
             $this->id_code = $value;
         else
             throw new Exception("Code is set already. Code may only be set once");
@@ -49,11 +50,12 @@ class MusicClass extends BaseModel
 
     protected function setIDEdition($value)
     {
-        if(is_null($this->id_edition))
+        if (is_null($this->id_edition))
             $this->id_edition = $value;
         else
             throw new Exception("The ID Edition is already set. Edition may be set only once");
     }
+
     public function  getName()
     {
         return $this->name;
@@ -92,15 +94,11 @@ class MusicClass extends BaseModel
 
     public function setType($value)
     {
-        if(strcmp($value,MusicClass::TYPE_INDIVIDUAL) == 0)
-        {
+        if (strcmp($value, MusicClass::TYPE_INDIVIDUAL) == 0) {
             $this->type = MusicClass::TYPE_INDIVIDUAL;
-        }
-        else if(strcmp($value,MusicClass::TYPE_GROUP) == 0)
-        {
+        } else if (strcmp($value, MusicClass::TYPE_GROUP) == 0) {
             $this->type = MusicClass::TYPE_GROUP;
-        }
-        else
+        } else
             throw new Exception("Unknown Type. Class must be individual or group.");
     }
 
@@ -108,9 +106,10 @@ class MusicClass extends BaseModel
     {
         return $this->dayOfWeek;
     }
+
     public function setDayOfWeek($value)
     {
-        if(Utils::validateDay($value))
+        if (Utils::validateDay($value))
             $this->dayOfWeek = $value;
         else
             throw new Exception("Invalid day of week");
@@ -124,6 +123,15 @@ class MusicClass extends BaseModel
     public function setTime($value)
     {
         $this->time = $value;
+    }
+
+
+    public function setInstruments($instruments){
+        $this->instruments=$instruments;
+    }
+
+    public function getInstruments(){
+        return $this->instruments;
     }
 
     /**
@@ -170,13 +178,20 @@ class MusicClass extends BaseModel
         $this->duration = $data["duration"];
         $this->type = $data["type"];
         $this->dayOfWeek = $data["timeslot_day"];
-        $this->time=$data['timeslot_time'];
+        $this->time = $data['timeslot_time'];
 
+        $pdo = DB::connection()->getPdo();
+        $statement = $pdo->prepare("SELECT instrument_name FROM class_instrument WHERE class_id_code= :code AND class_id_edition=:edition");
+        $statement->execute(array('code' => $this->id_code, 'edition' => $this->id_edition));
+        $instrumentResults = $statement->fetch();
+
+        $this->instruments=array();
+        foreach($instrumentResults as $instrumentResult){
+            if(!in_array($this->instruments)){
+                $this->instruments[]=$instrumentResult;
+            }
+        }
     }
-
-
-
-
 
 
     /**
@@ -193,10 +208,9 @@ class MusicClass extends BaseModel
         $statement = $pdo->prepare("INSERT INTO class (class_id_code,name,start_date,duration,type,timeslot_day, timeslot_time) VALUES (:code,:name, :start_date, :duration, :type, :timeslot_day, :timeslot_time);");
 
 
-
         $result = $statement->execute(array("code" => $mc->getIDCode(),
-            "name" => $mc->getName(), "start_date" => $mc->getStartDate(),"duration"=>$mc->getDuration(), "type"=>$mc->getType(), "timeslot_day" => $mc->getDayOfWeek(), "timeslot_time"=>$mc->getTime()
-            ));
+            "name" => $mc->getName(), "start_date" => $mc->getStartDate(), "duration" => $mc->getDuration(), "type" => $mc->getType(), "timeslot_day" => $mc->getDayOfWeek(), "timeslot_time" => $mc->getTime()
+        ));
 
         if (!$result)
             throw new Exception("Unable to insert class");
@@ -207,8 +221,20 @@ class MusicClass extends BaseModel
         $result = $fetchIdStatement->fetch();
 
         $mc->setIDEdition($result["class_id_edition"]);
+
+
+        $instrumentInsert=$pdo->prepare('INSERT INTO class_instrument (class_id_code,class_id_edition,instrument_name) VALUES (:code,:edition,:name)');
+        foreach($mc->getInstruments() as $instrument){
+            if(!empty($instrument)) {
+                $success = $instrumentInsert->execute(array('code' => $mc->getIDCode(), 'edition' => $mc->getIDEdition(), 'name' =>$instrument));
+
+                if(!$success){
+                    throw new Exception("Unable to insert the instrument");
+                }
+            }
+        }
         //finally return the student object
-        return self::fromCodeEdition($mc->getIDCode(),$result["class_id_edition"]);
+        return self::fromCodeEdition($mc->getIDCode(), $result["class_id_edition"]);
     }
 
     public function __construct()
@@ -230,7 +256,7 @@ class MusicClass extends BaseModel
         $statement->execute();
 
         $classes = array();
-       while($result = $statement->fetch()) {
+        while ($result = $statement->fetch()) {
             $mc = new MusicClass();
             $mc->loadFromData($result);
             $classes[] = $mc;
@@ -259,7 +285,6 @@ class MusicClass extends BaseModel
 
         return $mc;
     }
-
 
 
 }
