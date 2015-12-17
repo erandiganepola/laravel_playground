@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('students',['as'=>'students','uses'=>'StudentController@index']);
     Route::get('addStudent',['as'=>'addStudent','uses'=>'StudentController@create']);
     Route::post('addStudent',['as'=>'addStudent','uses'=>'StudentController@store']);
+    Route::get('student/{id}',['as'=>'student','uses'=>'StudentController@show']);
 
     /**
      * Routes related to parents
@@ -51,13 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('teachers',['as'=>'teachers','uses'=>'TeacherController@index']);
     Route::get('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@create']);
     Route::post('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@store']);
-
-
-
-    /**
-     * Routes related to testing purposes
-     */
-    Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
+    Route::get('teacher/{id}',['as'=>'teacher','uses'=>'TeacherController@show']);
 
 
 
@@ -89,6 +84,14 @@ Route::group(['middleware' => 'auth'], function () {
      * Routes related to Instruments
      */
     Route::get('instruments',['as'=>'instruments','uses'=>'InstrumentController@index']);
+
+
+    /**
+     * Routes related to testing purposes
+     */
+    Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
+
+
 });
 
 

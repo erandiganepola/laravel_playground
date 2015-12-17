@@ -233,7 +233,7 @@
 
             </div><!-- /.box-body -->
             <div class="box-footer">
-                <button type="submit" class="btn btn-default">Cancel</button>
+                <button type="reset" class="btn btn-default">Cancel</button>
                 <button type="submit" class="btn btn-info pull-right">Add</button>
             </div><!-- /.box-footer -->
         </form>
