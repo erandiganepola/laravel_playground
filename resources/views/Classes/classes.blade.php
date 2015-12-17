@@ -36,18 +36,18 @@
                 <thead>
                 <tr>
                     <th>Code</th>
-                    <th>Edition</th>
                     <th>Name</th>
                     <th>Starts From</th>
+                    <th>Type</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($classes as $class)
                     <tr>
-                        <td>{{$class->getIDCode()}}</td>
-                        <td>{{$class->getIDEdition()}}</td>
+                        <td>{{$class->getID()}}</td>
                         <td>{{$class->getName()}}</td>
                         <td>{{$class->getStartDate()}}</td>
+                        <td>{{$class->getType()==="I"? "Individual":"Group"}}</td>
                     </tr>
                 @endforeach
                 </tbody>
