@@ -27,7 +27,6 @@ class Instrument extends BaseModel
         
         $statement = $pdo->prepare("INSERT INTO instrument (name) VALUES (:name);");
         $result_insert_instrument = $statement->execute(array("name" => $name));
-       
         
          if (!$result_insert_instrument)
             throw new Exception("Unable to insert instrument");

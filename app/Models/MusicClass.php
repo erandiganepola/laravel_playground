@@ -186,11 +186,11 @@ class MusicClass extends BaseModel
         $instrumentResults = $statement->fetch();
 
         $this->instruments=array();
-        foreach($instrumentResults as $instrumentResult){
+        /*foreach($instrumentResults as $instrumentResult){
             if(!in_array($this->instruments)){
                 $this->instruments[]=$instrumentResult;
             }
-        }
+        }*/
     }
 
 
@@ -224,7 +224,7 @@ class MusicClass extends BaseModel
 
 
         $instrumentInsert=$pdo->prepare('INSERT INTO class_instrument (class_id_code,class_id_edition,instrument_name) VALUES (:code,:edition,:name)');
-        foreach($mc->getInstruments() as $instrument){
+        /*foreach($mc->getInstruments() as $instrument){
             if(!empty($instrument)) {
                 $success = $instrumentInsert->execute(array('code' => $mc->getIDCode(), 'edition' => $mc->getIDEdition(), 'name' =>$instrument));
 
@@ -232,9 +232,9 @@ class MusicClass extends BaseModel
                     throw new Exception("Unable to insert the instrument");
                 }
             }
-        }
+        }*/
         //finally return the student object
-        return self::fromCodeEdition($mc->getIDCode(), $result["class_id_edition"]);
+        //return self::fromCodeEdition($mc->getIDCode(), $result["class_id_edition"]);
     }
 
     public function __construct()

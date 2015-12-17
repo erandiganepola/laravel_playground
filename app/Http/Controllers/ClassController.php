@@ -22,7 +22,8 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return view('Classes.classes');
+        $classes=MusicClass::getClasses();
+        return view('Classes.classes',['classes'=>$classes]);
     }
 
     /**
@@ -94,12 +95,12 @@ class ClassController extends Controller
         } catch (Exception $e) {
             DB::rollback();
             Log::error($e->getMessage());
-            return back()->with('errors', $validator->errors()->all())->withInput();
+            return back()->with('errors', array('Something went wrong!'))->withInput();
         }
         DB::commit();
 
 
-        return back()->withInput();
+        return back()->with('success',$request->name." successfully added!");
     }
 
     /**
