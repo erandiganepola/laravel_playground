@@ -18,7 +18,7 @@ class InstrumentController extends Controller
     public function index()
     {
         $instruments=Instrument::getInstruments();
-        return view('Settings.settings',['instruments'=>$instruments]);
+        return view('Settings.instruments',['instruments'=>$instruments]);
     }
 
     /**
@@ -28,7 +28,7 @@ class InstrumentController extends Controller
      */
     public function create()
     {
-        //
+        return view('Settings.addInstrument');
     }
 
     /**
@@ -37,10 +37,40 @@ class InstrumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    private $name ;
     public function store(Request $request)
-    {
-        //
-    }
+
+        {
+            $validator=Validator::make($request->all(),array(
+                'name'=>'required',
+
+            ));
+
+            //if validation fails
+            if($validator->fails()){
+                return back()->with('errors',$validator->errors()->all())->withInput();
+            }
+
+            $instrument=new Instrument();
+            $name = name;
+//            $instrument->insertInstrument($request->name);
+
+
+
+            DB::beginTransaction();
+            try{
+                Instrument::insertInstrument($name);
+            }
+            catch(Exception $e){
+                DB::rollback();
+                Log::error($e->getMessage());
+                return back()->with('errors',array("Something went wrong!"))->withInput();
+            }
+            DB::commit();
+
+            return back()->with('success', $request->name . " added successfully!");
+        }
+
 
     /**
      * Display the specified resource.
