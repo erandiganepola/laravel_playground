@@ -12,6 +12,13 @@
 
 @section('content')
 
+    <div class="container-fluid" style="margin-bottom: 5px">
+        <a class="btn btn-sm btn-primary pull-right" href="{{route('addClass')}}">Add Class</a>
+    </div>
+
+
+
+
 
 
 

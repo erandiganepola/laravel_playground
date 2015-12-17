@@ -53,8 +53,8 @@
                     <label for="code" class="col-sm-2 control-label">Class Code</label>
 
                     <div class="col-sm-4">
-                        <input type="text" maxlength="8" required class="form-control" id="code" placeholder="Code" name="code"
-                               value="{{old('code')}}">
+                        <input type="text" maxlength="8" required class="form-control" id="code" placeholder="Code"
+                               name="code" value="{{old('code')}}">
                     </div>
                 </div>
 
@@ -86,11 +86,25 @@
                                 Group Class
                             </label>
                         </div>
-
                     </div>
-
                 </div>
 
+                @for($i=0;$i<3;$i++)
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Instrument {{$i+1}}</label>
+
+                        <div class="col-sm-4">
+                            <select @if($i==0) required @endif class="form-control" placeholder="Instrument {{$i+1}}"
+                                    name="instrument[]">
+                                <option>Select Instrument</option>
+
+                                @foreach($instruments as $instrument)
+                                    <option @if(old('instrument')[$i]===$instrument) selected @endif>{{$instrument}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                @endfor
 
 
                 <div class="box box-default">
@@ -113,11 +127,13 @@
                             <label for="duration_hours" class="col-sm-2 control-label">Duration</label>
 
                             <div class="col-sm-2">
-                                <input type="number" max="12" min="0" class="form-control" id="duration_hours" placeholder="Hours"
+                                <input type="number" max="12" min="0" class="form-control" id="duration_hours"
+                                       placeholder="Hours"
                                        name="duration_hours" value="{{old('duration_hours')}}" required>
                             </div>
                             <div class="col-sm-2">
-                                <input type="number" max="59" min="0" step="15" class="form-control" id="duration_minutes" placeholder="Minutes"
+                                <input type="number" max="59" min="0" step="15" class="form-control"
+                                       id="duration_minutes" placeholder="Minutes"
                                        name="duration_minutes" value="{{old('duration_minutes')}}" required>
                             </div>
                         </div>
@@ -127,19 +143,38 @@
 
                             <div class="col-sm-2">
                                 <select class="form-control" id="day_of_week" name="day_of_week">
-                                    <option id="day_of_week_monday"  @if(old('day_of_week')==="MON") selected @endif>Monday</option>
-                                    <option id="day_of_week_tuesday"  @if(old('day_of_week')==="TUE") selected @endif>Tuesday</option>
-                                    <option id="day_of_week_wednesday"  @if(old('day_of_week')==="WED") selected @endif>Wednesday</option>
-                                    <option id="day_of_week_thursday"  @if(old('day_of_week')==="THU") selected @endif>Thursday</option>
-                                    <option id="day_of_week_friday"  @if(old('day_of_week')==="FRI") selected @endif>Friday</option>
-                                    <option id="day_of_week_saturday"  @if(old('day_of_week')==="SAT") selected @endif>Saturday</option>
-                                    <option id="day_of_week_sunday"  @if(old('day_of_week')==="SUN") selected @endif>Sunday</option>
+                                    <option id="day_of_week_monday" @if(old('day_of_week')==="MON") selected @endif>
+                                        Monday
+                                    </option>
+                                    <option id="day_of_week_tuesday"
+                                            @if(old('day_of_week')==="TUE") selected @endif>
+                                        Tuesday
+                                    </option>
+                                    <option id="day_of_week_wednesday"
+                                            @if(old('day_of_week')==="WED") selected @endif>
+                                        Wednesday
+                                    </option>
+                                    <option id="day_of_week_thursday"
+                                            @if(old('day_of_week')==="THU") selected @endif>
+                                        Thursday
+                                    </option>
+                                    <option id="day_of_week_friday" @if(old('day_of_week')==="FRI") selected @endif>
+                                        Friday
+                                    </option>
+                                    <option id="day_of_week_saturday"
+                                            @if(old('day_of_week')==="SAT") selected @endif>
+                                        Saturday
+                                    </option>
+                                    <option id="day_of_week_sunday" @if(old('day_of_week')==="SUN") selected @endif>
+                                        Sunday
+                                    </option>
                                 </select>
 
                             </div>
 
                             <div class="col-sm-2">
-                                <input type="time" class="form-control" id="time" name="time" value="{{old('time')}}"/>
+                                <input type="time" class="form-control" id="time" name="time"
+                                       value="{{old('time')}}"/>
 
                             </div>
                         </div>

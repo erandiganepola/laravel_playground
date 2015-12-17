@@ -73,6 +73,7 @@ class Instrument extends BaseModel
     }
 
 
+<<<<<<< HEAD
     /**
      * Abstract method toArray
      * To get the data/details of a model in a JSON compatible manner.
@@ -86,4 +87,11 @@ class Instrument extends BaseModel
 
 
 
+=======
+    public function toArray()
+    {
+        return array();
+    }
+
+>>>>>>> df5dbb17f76cb16cdd7a4fec97cac05632e64eaa
 }
