@@ -12,7 +12,8 @@ use Log;
 
 class Instrument extends BaseModel
 {
-    
+    private $name;
+
     /**
      * Insert an instrument to the database.
      *
@@ -70,6 +71,19 @@ class Instrument extends BaseModel
         }
         return $instruments;
     }
+
+
+    /**
+     * Abstract method toArray
+     * To get the data/details of a model in a JSON compatible manner.
+     *
+     * @return mixed
+     */
+    public function toArray()
+    {
+        // TODO: Implement toArray() method.
+    }
+
 
 
 }
