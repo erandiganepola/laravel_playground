@@ -66,6 +66,7 @@ class TeacherController extends Controller
         $teacher->setDOB($request->birthday);
         $teacher->setAddress($request->address);
         $teacher->activate();
+        Log::info($request->phone);
 
         //insert the teacher in a transaction
         DB::beginTransaction();

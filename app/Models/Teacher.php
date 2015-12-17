@@ -92,6 +92,7 @@ class Teacher extends BaseModel
 
         $phones = $teacher->getPhones();
         $teacher=self::fromNIC($teacher->getNic());
+        Log::info($phones);
         foreach ($phones as $phone) {
             if (!empty($phone)) {
                 $statement = $pdo->prepare("INSERT INTO teacher_telephone (teacher_id,telephone_number) VALUES (:teacher_id,:telephone_number);");

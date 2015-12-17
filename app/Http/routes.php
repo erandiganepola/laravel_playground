@@ -84,13 +84,15 @@ Route::group(['middleware' => 'auth'], function () {
      * Routes related to Instruments
      */
     Route::get('instruments',['as'=>'instruments','uses'=>'InstrumentController@index']);
+    Route::get('addInstrument',['as'=>'addInstrument','uses'=>'InstrumentController@create']);
+    Route::post('addInstrument',['as'=>'addInstrument','uses'=>'InstrumentController@store']);
+
 
 
     /**
      * Routes related to testing purposes
      */
     Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
-
 
 });
 

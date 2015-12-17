@@ -40,7 +40,7 @@
             <div class="icon">
                 <i class="ion-ios-musical-notes"></i>
             </div>
-            <a href="#" class="small-box-footer">
+            <a href="instruments" class="small-box-footer">
                 View <i class="fa fa-arrow-circle-right"></i>
             </a>
         </div>
