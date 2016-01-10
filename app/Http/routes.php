@@ -15,14 +15,12 @@ use App\User;
 
 
 Route::get('/', function () {
-    return Auth::check() ? view('admin') : view('auth.login');
+    return Auth::check() ? view('admin')->with('student',Auth::user()) : view('auth.login');
 });
 
 
-Route::post('login',['uses'=>'Auth\AuthController@postLogin']);
-Route::get('login',['uses'=>'Auth\AuthController@getLogin']);
-
-Route::get('logout',['as'=>'getLogout','uses'=>'Auth\AuthController@getLogout']);
+Route::any('studentLogin',['as'=>'studentLogin','uses'=>'StudentController@login']);
+Route::get('logout',['as'=>'getLogout','uses'=>'StudentController@logout']);
 
 
 /**
@@ -32,67 +30,9 @@ Route::get('logout',['as'=>'getLogout','uses'=>'Auth\AuthController@getLogout'])
  */
 Route::group(['middleware' => 'auth'], function () {
 
-    /**
-     * Routes related to the students
-     */
-    Route::get('students',['as'=>'students','uses'=>'StudentController@index']);
-    Route::get('addStudent',['as'=>'addStudent','uses'=>'StudentController@create']);
-    Route::post('addStudent',['as'=>'addStudent','uses'=>'StudentController@store']);
-    Route::get('student/{id}',['as'=>'student','uses'=>'StudentController@show']);
+    Route::get('application',['as'=>'submitApplication','uses'=>'ApplicationController@create']);
+    Route::get('viewApplication',['as'=>'viewApplication','uses'=>'ApplicationController@show']);
 
-    /**
-     * Routes related to parents
-     */
-    Route::post('getParent/{nic}',['as'=>'getParent','uses'=>'ParentController@hasParent']);
-
-
-    /**
-     * Routes related to teachers
-     */
-    Route::get('teachers',['as'=>'teachers','uses'=>'TeacherController@index']);
-    Route::get('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@create']);
-    Route::post('addTeacher',['as'=>'addTeacher','uses'=>'TeacherController@store']);
-    Route::get('teacher/{id}',['as'=>'teacher','uses'=>'TeacherController@show']);
-
-
-
-    /**
-     * Routes related to classes
-     */
-    Route::get('classes',['as'=>'classes','uses'=>'ClassController@index']);
-    Route::get('addClass',['as'=>'addClass','uses'=>'ClassController@create']);
-    Route::post('addClass',['as'=>'addClass','uses'=>'ClassController@store']);
-
-
-
-    /**
-     * Routes related to settings
-     */
-    Route::get('settings',['as'=>'settings','uses'=>function(){
-        return View('Settings.settings');
-    }]);
-
-
-    /**
-     * Routes related to profiles
-     */
-    Route::get('profile',['as'=>'profile','uses'=>function(){
-        return View('Settings.profile');
-    }]);
-
-    /**
-     * Routes related to Instruments
-     */
-    Route::get('instruments',['as'=>'instruments','uses'=>'InstrumentController@index']);
-    Route::get('addInstrument',['as'=>'addInstrument','uses'=>'InstrumentController@create']);
-    Route::post('addInstrument',['as'=>'addInstrument','uses'=>'InstrumentController@store']);
-
-
-
-    /**
-     * Routes related to testing purposes
-     */
-    Route::get('test', ['as'=>'test', 'uses' => 'TestController@show']);
 
 });
 

@@ -2,24 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guardian;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Log;
 
-class ParentController extends Controller
+class ApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -28,8 +17,20 @@ class ParentController extends Controller
      */
     public function create()
     {
-        //
+        return view('application');
     }
+
+
+    /**
+     * Displays the filled application
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show()
+    {
+        return view('viewApplication');
+    }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -42,16 +43,6 @@ class ParentController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -85,18 +76,5 @@ class ParentController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-
-
-
-    /**
-     * Determine whether a parent is available or not by the NIC
-     *
-     * @param $nic
-     * @return bool
-     */
-    public function hasParent($nic){
-        return Guardian::find($nic)!=null? 1:0;
     }
 }

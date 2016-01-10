@@ -27,12 +27,12 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{url('/')}}"><b>Admin</b>SMS</a>
+        <a href="{{url('/')}}"><b>G5</b>SRMS</a>
     </div><!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Please sign in</p>
 
-        <form action="{{url('login')}}" method="post">
+        <form action="{{route('studentLogin')}}" method="post">
 
             {{csrf_field()}}
 
@@ -48,7 +48,7 @@
 
 
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" placeholder="Username" required name="username"
+                <input type="text" class="form-control" placeholder="Username" required name="examination_no"
                        value="{{old('username')}}">
 
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>

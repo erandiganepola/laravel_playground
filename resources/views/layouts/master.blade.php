@@ -1,9 +1,13 @@
+<?php
+    $student=Auth::user();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Symfony Music School</title>
+    <title>G5 - SRMS</title>
     <link rel="shortcut" href="favicon.ico"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -38,9 +42,9 @@
         <!-- Logo -->
         <a href="{{url('/')}}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>SMS</b></span>
+            <span class="logo-mini"><b>SRMS</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>SMS</b> Admin</span>
+            <span class="logo-lg"><b>G5 - SRMS</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -59,7 +63,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{asset('dist/img/avatar.png')}}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Admin</span>
+                            <span class="hidden-xs">{{$student->name}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -67,8 +71,8 @@
                                 <img src="{{asset('dist/img/avatar.png')}}" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Admin
-                                    <small>Symphony Music School</small>
+                                    {{$student->name}}
+                                    <small>{{$student->school->name}}</small>
                                 </p>
                             </li>
 
@@ -101,8 +105,8 @@
                     <img src="{{asset('dist/img/avatar.png')}}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Admin - SMS</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    <p>{{$student->name}}</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> {{$student->school->name}}</a>
                 </div>
             </div>
 
@@ -125,39 +129,21 @@
             <ul class="sidebar-menu">
                 <li @if(url('/')===Request::url()) class="active" @endif>
                     <a href="{{url('/')}}">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        <i class="fa fa-dashboard"></i> <span>Overview</span>
                     </a>
                 </li>
 
-                <li @if(route('classes')===Request::url()) class="active" @endif>
-                    <a href="{{route('classes')}}">
-                        <i class="fa  fa-book"></i> <span>Classes</span>
+                <li @if(route('submitApplication')===Request::url()) class="active" @endif>
+                    <a href="{{route('submitApplication')}}">
+                        <i class="fa fa-paperclip"></i> <span>Submit Application</span>
                     </a>
                 </li>
 
-                <li @if(route('students')===Request::url()) class="active" @endif>
-                    <a href="{{route('students')}}">
-                        <i class="fa fa-graduation-cap"></i> <span>Students</span>
+                <li @if(route('viewApplication')===Request::url()) class="active" @endif>
+                    <a href="{{route('viewApplication')}}">
+                        <i class="fa fa-paper-plane"></i> <span>View Application</span>
                     </a>
                 </li>
-
-                <li @if(route('teachers')===Request::url()) class="active" @endif>
-                    <a href="{{route('teachers')}}">
-                        <i class="fa  fa-pencil-square-o"></i> <span>Teachers</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{url('/')}}">
-                        <i class="fa  fa-wrench"></i> <span>Concerts</span>
-                    </a>
-                </li>
-                <li @if(route('settings')===Request::url()) class="active" @endif>
-                    <a href="{{route('settings')}}">
-                        <i class="fa fa-line-chart"></i> <span>Settings</span>
-                    </a>
-                </li>
-
 
 
             </ul>
@@ -197,9 +183,9 @@
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.0
+            <b>Version</b> 1.0
         </div>
-        <strong>Copyright &copy; <a href="#">Eduze</a>.</strong> All rights
+        <strong>Copyright &copy; <a href="#">Ministry of Education, Sri Lanka</a>.</strong> All rights
         reserved.
     </footer>
 </div><!-- ./wrapper -->

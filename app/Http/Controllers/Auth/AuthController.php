@@ -24,15 +24,13 @@ class AuthController extends Controller
 
 
     protected $redirectPath = '/';
-    protected $loginPath = 'login';
-    protected $username = 'username';
+    protected $loginPath = 'studentLogin';
+    protected $username = 'examination_no';
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
     /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
+     * AuthController constructor.
      */
     public function __construct()
     {

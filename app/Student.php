@@ -10,9 +10,9 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class Student extends Model implements AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -21,14 +21,14 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var string
      */
-    protected $table = 'user_account';
+    protected $table = 'student';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['username', 'password'];
+    protected $fillable = ['examination_no', 'password'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -43,26 +43,11 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var string
      */
-    protected $primaryKey='username';
-
-    /**
-     * States whether the primary key is auto incrementing
-     *
-     * @var bool
-     */
-    public $incrementing=false;
+    protected $primaryKey='id';
 
 
-    /**
-     * Whether the model is to be timestamped
-     *
-     * @var bool
-     */
-    public $timestamps=false;
-
-
-    public function getUsername(){
-        return $this->username;
+    public function school(){
+        return $this->belongsTo('App\School','school_id','id');
     }
 
 }
