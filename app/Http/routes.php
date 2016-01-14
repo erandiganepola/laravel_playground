@@ -22,6 +22,11 @@ Route::get('/', function () {
 Route::any('studentLogin',['as'=>'studentLogin','uses'=>'StudentController@login']);
 Route::get('logout',['as'=>'getLogout','uses'=>'StudentController@logout']);
 
+/**
+ *  Rest API Linkage
+ */
+
+Route::get("rest/examResults/all/" , ["as"=>"AllExamResultsRest", 'uses'=>'RESTAPIController@allResults']);
 
 /**
  * ======================================================

@@ -1,5 +1,5 @@
 <?php
-
+use \App\School;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -118,6 +118,7 @@ class DatabaseSeeder extends Seeder
 
 
 
+
         $names=array('Nipun Perera','Imesha Sudasingha', 'Madhawa Vidanapathirana','Jayan Chathuranga','Pasindu Kanchana','Dulaj Atapattu');
         for($i=0;$i<20;$i++){
             $student=new \App\Student();
@@ -128,7 +129,20 @@ class DatabaseSeeder extends Seeder
             $student->school_id=rand(1,10);
             $student->save();
 
+            $studentexam=new \App\ExamResultsRest();
+            $studentexam->name=$student->name;
+            $studentexam->examination_number=$student->examination_no;
+            $studentexam->dob = "1993-05-01";
+            $studentexam->district = "Colombo";
+            $studentexam->marks = rand(50,200);
+            $studentexam->school = School::find($student->school_id)->name;
+            $studentexam->save();
+
         }
+
+
+
+
 
 
 
