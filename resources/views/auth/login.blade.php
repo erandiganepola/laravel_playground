@@ -27,7 +27,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{url('/')}}"><b>Admin</b>SMS</a>
+        <a href="{{url('/')}}"><b>Admin</b>DOE</a>
     </div><!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Please sign in</p>
@@ -71,10 +71,6 @@
             </div>
         </form>
 
-        {{--
-        <a href="#">I forgot my password</a><br>
-        <a href="register.html" class="text-center">Register a new membership</a>
---}}
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->
 

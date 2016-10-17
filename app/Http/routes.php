@@ -33,16 +33,3 @@ Route::get('logout',['as'=>'getLogout','uses'=>'Auth\AuthController@getLogout'])
 Route::group(['middleware' => 'auth'], function () {
 
 });
-
-
-/**
- * Test function to create a user
- */
-Route::get('register', function () {
-    $user = new User;
-    $user->username = 'admin';
-    $user->password = Hash::make('admin');
-    $user->save();
-
-    return $user->password;
-});
