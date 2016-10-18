@@ -43,4 +43,24 @@ class User extends Model implements AuthenticatableContract,
     public function role() {
         return $this->belongsTo("App\\Role");
     }
+
+    public function isSuperAdmin() {
+        return strcmp($this->role->role, "super_admin") == 0;
+    }
+
+    public function isChiefExecutive() {
+        return strcmp($this->role->role, "super_admin") == 0;
+    }
+
+    public function isExecutive() {
+        return strcmp($this->role->role, "executive") == 0;
+    }
+
+    public function isClerk() {
+        return strcmp($this->role->role, "clerk") == 0;
+    }
+
+    public function isStudent() {
+        return strcmp($this->role->role, "student") == 0;
+    }
 }

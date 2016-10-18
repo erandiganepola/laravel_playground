@@ -19,10 +19,13 @@ Route::get('/', function () {
 });
 
 
-Route::post('login',['uses'=>'Auth\AuthController@postLogin']);
-Route::get('login',['uses'=>'Auth\AuthController@getLogin']);
+Route::post('login', ['uses' => 'Auth\AuthController@postLogin']);
+Route::get('login', ['uses' => 'Auth\AuthController@getLogin']);
 
-Route::get('logout',['as'=>'getLogout','uses'=>'Auth\AuthController@getLogout']);
+Route::get('twoFactorAuthentication', ['uses' => 'Auth\AuthController@getTwoFactorAuthentication']);
+Route::post('twoFactorAuthentication', ['uses' => 'Auth\AuthController@postTwoFactorAuthentication']);
+
+Route::get('logout', ['as' => 'getLogout', 'uses' => 'Auth\AuthController@getLogout']);
 
 
 /**

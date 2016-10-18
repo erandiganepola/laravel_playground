@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+<?php
+$user = \Illuminate\Support\Facades\Auth::user();
+?>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Are You Ready? 2015</title>
+    <title>DoE | Web Portal</title>
     <link rel="shortcut" href="favicon.ico"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -38,9 +41,9 @@
         <!-- Logo -->
         <a href="{{url('/')}}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>SMS</b></span>
+            <span class="logo-mini"><b>DoE</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>SMS</b> Admin</span>
+            <span class="logo-lg"><b>DoE</b> Portal</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -67,8 +70,8 @@
                                 <img src="{{asset('dist/img/logo.png')}}" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Admin
-                                    <small>Symphony Music School</small>
+                                    {{$user->username}}
+                                    <small>DoE Web Portal</small>
                                 </p>
                             </li>
 
@@ -101,8 +104,7 @@
                     <img src="{{asset('dist/img/logo.png')}}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Admin - SMS</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    <p>DoE Web</p>
                 </div>
             </div>
 
@@ -112,7 +114,7 @@
                 <div class="input-group">
                     <input type="text" name="indexNumber" class="form-control" placeholder="Search...">
 
-                      <span class="input-group-btn">
+                    <span class="input-group-btn">
                         <button type="submit" id="search-btn" class="btn btn-flat"><i
                                     class="fa fa-search"></i>
                         </button>
@@ -147,27 +149,20 @@
             </h1>
 
         </section>
-
-
         <!-- Main content -->
         <section class="content">
-            @yield('content')
-                    <!-- Default box -->
-
-
+        @yield('content')
+        <!-- Default box -->
         </section><!-- /.content -->
-
-
     </div><!-- /.content-wrapper -->
 
     <!--  ============================================== -->
-
-
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; <a href="http://areyouready.uom.lk">Are You Ready? 2015</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; <a href="http://areyouready.uom.lk">Are You Ready? 2015</a>.</strong> All rights
+        reserved.
     </footer>
 </div><!-- ./wrapper -->
 

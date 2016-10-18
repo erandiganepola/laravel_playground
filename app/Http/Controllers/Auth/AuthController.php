@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Util\SMSHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -40,11 +43,10 @@ class AuthController extends Controller {
     /**
      * Handle a login request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function postLogin(Request $request)
-    {
+    public function postLogin(Request $request) {
         $this->validate($request, [
             $this->loginUsername() => 'required', 'password' => 'required',
         ]);
@@ -61,6 +63,14 @@ class AuthController extends Controller {
         $credentials = $this->getCredentials($request);
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
+            $user = Auth::user();
+            if (!$user->isStudent()) {
+                session($request->session()->put('user', $user));
+                Auth::logout();
+
+                return redirect()->to("twoFactorAuthentication");
+            }
+
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
@@ -78,6 +88,41 @@ class AuthController extends Controller {
             ]);
     }
 
+    /**
+     * Gets the page for two factor authentication.
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    protected function getTwoFactorAuthentication() {
+        $user = session("user");
+        if ($user == null) {
+            return redirect()->to("login");
+        }
+
+        // Send the verification code
+        $code = SMSHelper::sendVerificationCode($user);
+        session(['verificationCode' => $code]);
+
+        return view("auth.twoFactor")->with(['user' => $user]);
+    }
+
+    /**
+     * Processed the two factor authentication attempt.
+     * @param Request $request
+     * @return Redirect
+     */
+    protected function postTwoFactorAuthentication(Request $request) {
+        $user             = session("user");
+        $verificationCode = session("verificationCode");
+
+        if (strcmp($verificationCode, $request->verificationCode) == 0) {
+            Auth::login($user);
+            $throttles = $this->isUsingThrottlesLoginsTrait();
+
+            return $this->handleUserWasAuthenticated($request, $throttles);
+        }
+
+        return back()->withErrors(['verificationCode' => "Verification Code is incorrect."]);
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -90,7 +135,7 @@ class AuthController extends Controller {
             'name'     => 'required|max:255',
             'username' => 'required|max:255|min:3|unique:users',
             'email'    => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:8',
         ]);
     }
 

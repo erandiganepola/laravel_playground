@@ -6,9 +6,9 @@
             <a href="{{url('/')}}"><b>Admin</b>DOE</a>
         </div><!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Please sign in</p>
+            <p class="login-box-msg">Please submit the verification code received</p>
 
-            <form action="{{url('login')}}" method="post">
+            <form action="{{url('twoFactorAuthentication')}}" method="post">
 
                 {{csrf_field()}}
 
@@ -22,15 +22,8 @@
                     </div>
                 @endif
 
-
                 <div class="form-group has-feedback">
-                    <input type="text" class="form-control" placeholder="Username" required name="username"
-                           value="{{old('username')}}">
-
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
+                    <input type="password" class="form-control" placeholder="VerificationCode" name="verificationCode">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
@@ -42,7 +35,7 @@
                         </div>
                     </div><!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Verify</button>
                     </div><!-- /.col -->
                 </div>
             </form>
