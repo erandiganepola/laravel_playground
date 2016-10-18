@@ -10,7 +10,7 @@ class CreateResultsTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('results', function (Blueprint $table) {
+        Schema::create('student_examination', function (Blueprint $table) {
             $table->increments('id');
             $table->integer("student_id")->unsigned();
             $table->integer("examination_id")->unsigned();
@@ -29,6 +29,6 @@ class CreateResultsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('results');
+        Schema::drop('student_examination');
     }
 }

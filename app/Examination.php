@@ -14,4 +14,13 @@ class Examination extends Model {
     public function creator() {
         return $this->belongsTo("App\\User", "created_by", "id");
     }
+
+    /**
+     * Students of this examination
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function students() {
+        return $this->belongsToMany("App\\User", "student_examination", "examination_id", "student_id")
+            ->withPivot(["attempt"]);
+    }
 }

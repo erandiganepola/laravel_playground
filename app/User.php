@@ -44,12 +44,24 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsTo("App\\Role");
     }
 
+    /**
+     * Exmainations of the user
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|array
+     */
+    public function examinations() {
+        if ($this->isStudent()) {
+            return $this->belongsToMany("App\\Examination", "student_examination", "student_id", "examination_id");
+        }
+
+        return [];
+    }
+
     public function isSuperAdmin() {
         return strcmp($this->role->role, "super_admin") == 0;
     }
 
     public function isChiefExecutive() {
-        return strcmp($this->role->role, "super_admin") == 0;
+        return strcmp($this->role->role, "chief_executive") == 0;
     }
 
     public function isExecutive() {

@@ -11,8 +11,6 @@
 |
 */
 
-use App\User;
-
 
 Route::get('/', [
     'as'   => 'root',
@@ -38,5 +36,12 @@ Route::get('logout', ['as' => 'getLogout', 'uses' => 'Auth\AuthController@getLog
  */
 Route::group(['middleware' => 'auth'], function () {
     Route::get("examinations", ['as' => 'examinations', 'uses' => 'ExaminationController@getAll']);
-    Route::get("student", ['as' => 'student', 'uses' => 'ResultController@getAll']);
+    Route::post("addExamination", ['as' => 'addExamination', 'uses' => 'ExaminationController@addExamination']);
+
+    Route::get("student", ['as' => 'student', 'uses' => 'ExaminationController@getAllExaminationsOfCurrentUser']);
+    Route::get("student/examApplications",
+        ['as' => 'examApplications', 'uses' => 'ExaminationController@getUpComingExaminations']);
+
+    Route::post("student/applyExamination/{id}",
+        ['as' => 'applyExamination', 'uses' => 'ExaminationController@applyExamination']);
 });

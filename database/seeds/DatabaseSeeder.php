@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder {
 
         $this->call(UserTableSeeder::class);
         $this->call(ExaminationsTableSeeder::class);
-        $this->call(ResultsTableSeeder::class);
+        $this->call(StudentExaminationSeeder::class);
 
         Model::reguard();
     }
@@ -50,7 +50,7 @@ class UserTableSeeder extends Seeder {
 class ExaminationsTableSeeder extends Seeder {
 
     public function run() {
-        $names = ["Ordinary Level", "Grade 5 Scholarship", "Advanced Level"];
+        $names = ["Advanced Level", "Ordinary Level", "Grade 5 Scholarship"];
         $year  = 2000;
 
         $user = Role::where("role", "chief_executive")->first()->users()->first();
@@ -68,15 +68,19 @@ class ExaminationsTableSeeder extends Seeder {
     }
 }
 
-class ResultsTableSeeder extends Seeder {
+class StudentExaminationSeeder extends Seeder {
 
     public function run() {
         $user = Role::where("role", "student")->first()->users()->first();
-        foreach (Examination::all() as $exam) {
-            $result = new Result();
-            $result->student()->associate($user);
-            $result->examination()->associate($exam);
-            $result->save();
+        foreach (Examination::where("year", ">", "2012")
+                     ->where("year", "<", "2016")->orderBy("year", "desc")->get() as $exam) {
+            if (
+                $user->examinations()->where("name", $exam->name)->first() == null &&
+                $user->examinations()->where("year", $exam->year)->first() == null
+            ) {
+                $user->examinations()->attach($exam);
+                $user->update();
+            }
         }
     }
 }

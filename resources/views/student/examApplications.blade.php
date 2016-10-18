@@ -2,43 +2,36 @@
 
 
 @section('page_header')
-    Examinations
+    Apply for Examinations
 @endsection
 
 
 @section('sub_header')
+    Upcoming Examinations
 @endsection
 
 @section('content')
-
     <div class="box box-primary">
         <div class="box-header">
-            <h4 class="box-title">Examinations</h4>
+            <h4 class="box-title">Apply for Examinations</h4>
         </div>
         <div class="box-body">
-            <div class="container-fluid margin">
-                @can("add","App\\Examination")
-                    <button class="btn btn-primary pull-left" data-toggle="modal" data-target="#addExamModal">
-                        Add Examination
-                    </button>
-                @endcan
-            </div>
-
-            @if(session()->has('success'))
-                <div class="alert alert-success alert-dismissable">
+            @if(Session::has('errors'))
+                <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h4><i class="icon fa fa-check"></i> Success!</h4>
-                    {{session('success')}}
+                    <h4><i class="icon fa fa-ban"></i> Oops!</h4>
+                    @foreach(Session::get('errors')->all() as $error)
+                        {{$error}}
+                    @endforeach
                 </div>
             @endif
-
             <table class="text-center table table-responsive table-condensed table-hover" id="examinationsTable">
                 <thead>
                 <tr>
                     <th class="col-md-2">Year</th>
                     <th class="col-md-5">Name</th>
                     <th class="col-md-1">Status</th>
-                    <th class="col-md-4">Created By</th>
+                    <th class="col-md-4"></th>
                 </tr>
                 </thead>
 
@@ -54,7 +47,12 @@
                                 <label class="label label-danger">Upcoming</label>
                             @endif
                         </td>
-                        <td>{{$exam->creator->username}}</td>
+                        <td>
+                            <form action="{{route("applyExamination",['id'=>$exam->id])}}" method="post">
+                                {{csrf_field()}}
+                                <button class="btn btn-sm btn-primary" type="submit">Apply</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -67,6 +65,4 @@
             $("#examinationsTable").dataTable();
         });
     </script>
-
-    @include("exams.modals.addExamination")
 @endsection
