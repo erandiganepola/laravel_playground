@@ -2,12 +2,11 @@
 
 
 @section('page_header')
-    Department of Education
+    My Examinations
 @endsection
 
 
 @section('sub_header')
-    Web Portal
 @endsection
 
 @section('content')

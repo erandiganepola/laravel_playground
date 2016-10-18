@@ -23,7 +23,7 @@
                 @endif
 
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="VerificationCode" name="verificationCode">
+                    <input type="text" class="form-control" placeholder="VerificationCode" name="verificationCode">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">

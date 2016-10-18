@@ -62,7 +62,7 @@ $user = \Illuminate\Support\Facades\Auth::user();
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{asset('dist/img/logo.png')}}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Admin</span>
+                            <span class="hidden-xs">{{$user->username}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -125,13 +125,26 @@ $user = \Illuminate\Support\Facades\Auth::user();
 
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li>
+                <li @if(strcmp(Request::url(),route("root"))==0) class="active" @endif>
                     <a href="{{url('/')}}">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        <i class="fa fa-dashboard"></i> <span>Overview</span>
                     </a>
                 </li>
+                @can('view','App\Examination')
+                    <li @if(str_contains(Request::url(),"examinations")) class="active" @endif>
+                        <a href="{{route("examinations")}}">
+                            <i class="fa fa-book"></i> <span>Examinations</span>
+                        </a>
+                    </li>
+                @endcan
 
-
+                @if($user->isStudent())
+                    <li @if(str_contains(Request::url(),"student")) class="active" @endif>
+                        <a href="{{route("student")}}">
+                            <i class="fa fa-user"></i> <span>My Examinations</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </section>
         <!-- /.sidebar -->

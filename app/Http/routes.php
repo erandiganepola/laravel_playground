@@ -14,9 +14,12 @@
 use App\User;
 
 
-Route::get('/', function () {
-    return Auth::check() ? view('admin') : view('auth.login');
-});
+Route::get('/', [
+    'as'   => 'root',
+    'uses' => function () {
+        return Auth::check() ? view('admin') : view('auth.login');
+    }
+]);
 
 
 Route::post('login', ['uses' => 'Auth\AuthController@postLogin']);
@@ -34,5 +37,6 @@ Route::get('logout', ['as' => 'getLogout', 'uses' => 'Auth\AuthController@getLog
  * ======================================================
  */
 Route::group(['middleware' => 'auth'], function () {
-
+    Route::get("examinations", ['as' => 'examinations', 'uses' => 'ExaminationController@getAll']);
+    Route::get("student", ['as' => 'student', 'uses' => 'ResultController@getAll']);
 });
